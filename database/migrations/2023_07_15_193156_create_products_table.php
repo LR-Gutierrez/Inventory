@@ -11,19 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('dni');
             $table->string('name');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->rememberToken();
+            $table->string('description');
+            $table->integer('item_quantity');
+            $table->float('price');
+            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('item_category_id');
+            $table->timestamp('expiration_date')->nullable();
             $table->timestamps();
 
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
+
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('no action')->onUpdate('cascade');
+            $table->foreign('item_category_id')->references('id')->on('item_categories')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
         });
@@ -34,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('products');
     }
 };
