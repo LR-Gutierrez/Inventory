@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('company_name');
             $table->string('tin');
-            $table->unsignedBigInteger('business_name_id');
+            $table->unsignedBigInteger('business_manager_id');
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
 
-            $table->foreign('business_name_id')->references('id')->on('business_manager')->onDelete('no action')->onUpdate('cascade');
+            $table->foreign('business_manager_id')->references('id')->on('business_managers')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');        });
     }
