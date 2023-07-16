@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->rememberToken();
+            $table->boolean('status')->default(true)->nullable();
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
