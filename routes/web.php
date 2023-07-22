@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\UserController;
@@ -40,5 +41,13 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [ItemCategoryController::class, 'edit'])->name('item-categories.edit');
         Route::put('/{id}', [ItemCategoryController::class, 'update'])->name('item-categories.update');
         Route::delete('/{id}', [ItemCategoryController::class, 'destroy'])->name('item-categories.destroy');
+    });
+    Route::prefix('coupons')->group(function() {
+        Route::get('/', [CouponController::class, 'index'])->name('coupons.index');
+        Route::get('/create', [CouponController::class, 'create'])->name('coupons.create');
+        Route::post('/create', [CouponController::class, 'store'])->name('coupons.store');
+        Route::get('/{id}', [CouponController::class, 'edit'])->name('coupons.edit');
+        Route::put('/{id}', [CouponController::class, 'update'])->name('coupons.update');
+        Route::delete('/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
     });
 });
