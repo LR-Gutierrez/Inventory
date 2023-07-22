@@ -1,7 +1,7 @@
 <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav" >
     <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
       <form action="#" method="GET" class="md:hidden mb-2">
-        <label for="sidebar-search" class="sr-only">Buscar</label>
+        <label for="sidebar-search" class="sr-only">Search</label>
         <div class="relative">
           <div
             class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"
@@ -47,7 +47,7 @@
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
           <i class="fa-solid fa-users flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-            <span class="ml-3">Usuarios</span>
+            <span class="ml-3">Users</span>
           </a>
         </li>
 

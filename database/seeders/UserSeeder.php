@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'dni' => '12345678',
             'name' => 'System',
             'lastname' => 'Admin',
+            'username' => 'system',
             'email' => 'admin@example.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'created_by' => 1,
