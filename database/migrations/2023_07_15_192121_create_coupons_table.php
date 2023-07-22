@@ -24,6 +24,7 @@ return new class extends Migration
             
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
+            $table->boolean('status')->nullable()->default(false);
         });
     }
 
