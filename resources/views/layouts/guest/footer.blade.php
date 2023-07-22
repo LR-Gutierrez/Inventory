@@ -7,7 +7,7 @@
       <p class="my-6 text-gray-500 dark:text-gray-400">This is an inventory system customized for small businesses. Developed using Laravel 10 + Tailwind - Flowbite.</p>
       <ul class="flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
           <li>
-              <a href="{{ route('login.index') }}" class="mr-4 hover:underline md:mr-6 ">Inicio</a>
+              <a href="{{ route('login.index') }}" class="mr-4 hover:underline md:mr-6 ">Home</a>
           </li>
           <li>
               <a href="https://laravel.com/" target="_blank" class="mr-4 hover:underline md:mr-6">Laravel</a>
@@ -16,6 +16,6 @@
               <a href="https://flowbite.com/" target="_blank" class="mr-4 hover:underline md:mr-6 ">Flowbite</a>
           </li>
       </ul>
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Company</a>. Todos los derechos reservados.</span>
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Company</a>. All rights reserved.</span>
   </div>
 </footer>

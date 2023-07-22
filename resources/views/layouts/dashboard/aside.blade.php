@@ -37,13 +37,13 @@
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group"
           >
           <i class="fa-solid fa-house flex items-center justify-center w-6 h-6 text-gray-500 transition duration-7 dark:text-white"></i>
-            <span class="ml-3">Inicio</span>
+            <span class="ml-3">Home</span>
           </a>
         </li>
 
         <li>
           <a
-            href="{{-- {{ route('users.index') }} --}}"
+            href="{{ route('users.index') }}"
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
           <i class="fa-solid fa-users flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -170,7 +170,7 @@
         role="tooltip"
         class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
       >
-        Configurar página
+        Settings
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
       <button
@@ -369,6 +369,5 @@
           </li>
         </ul>
       </div>
-
     </div>
 </aside>
