@@ -12,4 +12,15 @@ $(document).ready(function () {
             });
         },
     });
+    $('.UpperCase').on({
+        focus: function (event) {
+            $(event.target).select();
+        },
+        keyup: function (event){
+            $(event.target).val(function (index, value){
+                return value
+                .toUpperCase();
+            });
+        },
+    })
 });
