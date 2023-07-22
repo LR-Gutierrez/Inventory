@@ -12,29 +12,25 @@ class AuthController extends Controller
         return view('Auth/login');
     }
     public function login_store(Request $request){
-        dd($request);
-        /* $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
         $credentials = $request->only('email', 'password');
-        $credentials['status'] = true;
-        if (Auth::attempt($credentials, $request->remember)) {
+
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }
 
         return back()->withErrors([
             'user' => 'The provided credentials do not match our records.',
-        ]); */
+        ]);
     }
     public function reset_index(){
         return view('Auth/reset');
     }
     public function logout(Request $request){
-        /* Auth::logout();
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/'); */
+        return redirect('/');
     }
 }
