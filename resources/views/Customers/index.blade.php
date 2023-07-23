@@ -1,6 +1,6 @@
 @extends('..dashboard')
 
-@section('title', 'Users')
+@section('title', 'Customers')
 
 @section('content')
     <nav class="flex pb-3" aria-label="Breadcrumb">
@@ -14,13 +14,13 @@
         <li>
             <div class="flex items-center">
             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-            <a href="{{ route('users.index') }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Users</a>
+            <a href="{{ route('customers.index') }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Customers</a>
             </div>
         </li>
         <li aria-current="page">
             <div class="flex items-center">
             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">List of users</span>
+            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">List of customers</span>
             </div>
         </li>
         </ol>
@@ -51,11 +51,11 @@
                 </form>
             </div>
             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                <a href="{{ route('users.create') }}" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                <a href="{{ route('customers.create') }}" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                     </svg>
-                    Register User
+                    Register Customer
                 </a>
                 <div class="flex items-center space-x-3 w-full md:w-auto">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
@@ -68,36 +68,36 @@
                         @if ($order === '')
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                                 <li>
-                                    <a href="{{ route('users.index', ['order' => 'asc']) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ascending</a>
+                                    <a href="{{ route('customers.index', ['order' => 'asc']) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ascending</a>
                                 </li>
                             </ul>
                             <div class="py-1">
-                                <a href="{{ route('users.index', ['order' => 'desc']) }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Descending</a>
+                                <a href="{{ route('customers.index', ['order' => 'desc']) }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Descending</a>
                             </div>
                         @else
                             @if ($order == 'asc')
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                                     <li>
-                                        <a href="{{ route('users.index', ['order' => 'asc']) }}" class="block py-2 px-4 bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">Ascending</a>
+                                        <a href="{{ route('customers.index', ['order' => 'asc']) }}" class="block py-2 px-4 bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">Ascending</a>
                                     </li>
                                 </ul>
                                 <div class="py-1">
-                                    <a href="{{ route('users.index', ['order' => 'desc']) }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Descending</a>
+                                    <a href="{{ route('customers.index', ['order' => 'desc']) }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Descending</a>
                                 </div>
                                 <div class="py-1">
-                                    <a href="{{ route('users.index') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete filter</a>
+                                    <a href="{{ route('customers.index') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete filter</a>
                                 </div>
                             @else
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                                     <li>
-                                        <a href="{{ route('users.index', ['order' => 'asc']) }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Ascendente</a>
+                                        <a href="{{ route('customers.index', ['order' => 'asc']) }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Ascendente</a>
                                     </li>
                                 </ul>
                                 <div class="py-1">
-                                    <a href="{{ route('users.index', ['order' => 'desc']) }}" class="block py-2 px-4 text-sm text-gray-700 dark:text-white bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-500">Descendente</a>
+                                    <a href="{{ route('customers.index', ['order' => 'desc']) }}" class="block py-2 px-4 text-sm text-gray-700 dark:text-white bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-500">Descendente</a>
                                 </div>
                                 <div class="py-1">
-                                    <a href="{{ route('users.index') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete filters</a>
+                                    <a href="{{ route('customers.index') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete filters</a>
                                 </div>
                             @endif
                         @endif
@@ -115,37 +115,39 @@
                         <th scope="col" class="px-4 py-3">Lastname</th>
                         <th scope="col" class="px-4 py-3">ID Number</th>
                         <th scope="col" class="px-4 py-3">Email</th>
+                        <th scope="col" class="px-4 py-3">Phone</th>
+                        <th scope="col" class="px-4 py-3">Customer Since</th>
                         <th scope="col" class="px-4 py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @foreach ($customers as $customer)
                     <tr class="border-b dark:border-gray-700">
-                        <td class="px-4 py-3">{{ $user->id }}</td>
-                        <td class="px-4 py-3">{{ $user->name }}</td>
-                        <td class="px-4 py-3">{{ $user->lastname }}</td>
-                        <td class="px-4 py-3 liveIDtext">{{ $user->dni }}</td>
-                        <td class="px-4 py-3">{{ $user->email }}</td>
+                        <td class="px-4 py-3">{{ $customer->id }}</td>
+                        <td class="px-4 py-3">{{ $customer->name }}</td>
+                        <td class="px-4 py-3">{{ $customer->lastname }}</td>
+                        <td class="px-4 py-3 liveIDtext">{{ $customer->dni }}</td>
+                        <td class="px-4 py-3">{{ $customer->email }}</td>
+                        <td class="px-4 py-3">{{ $customer->phone }}</td>
+                        <td class="px-4 py-3">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $customer->created_at)->format('d-m-Y') }}</td>
                         <td class="px-4 py-3 flex items-center justify-center">
-                            <button id="user-{{$user->id}}-dropdown-button" data-dropdown-toggle="user-{{$user->id}}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                            <button id="customer-{{$customer->id}}-dropdown-button" data-dropdown-toggle="customer-{{$customer->id}}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                 <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                 </svg>
                             </button>
-                            <div id="user-{{$user->id}}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="user-{{$user->id}}-dropdown-button">
+                            <div id="customer-{{$customer->id}}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="customer-{{$customer->id}}-dropdown-button">
                                     <li>
-                                        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                        <a href="{{ route('customers.edit', ['id' => $customer->id]) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                     </li>
                                 </ul>
-                                @if (Auth::user()->id != $user->id)
-                                    <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="POST">
-                                        @method('DELETE')
-                                        <div class="py-1">
-                                            <button type="submit" class="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</button>
-                                        </div>
-                                    </form>
-                                @endif
+                                <form action="{{ route('customers.destroy', ['id' => $customer->id]) }}" method="POST">
+                                    @method('DELETE')
+                                    <div class="py-1">
+                                        <button type="submit" class="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</button>
+                                    </div>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -154,6 +156,6 @@
                 
             </table>
         </div>
-        {{ $users->links() }}
+        {{ $customers->links() }}
     </div>
 @endsection
