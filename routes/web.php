@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\UserController;
@@ -33,6 +34,14 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+    Route::prefix('customers')->group(function() {
+        Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
+        Route::post('/create', [CustomerController::class, 'store'])->name('customers.store');
+        Route::get('/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
+        Route::put('/{id}', [CustomerController::class, 'update'])->name('customers.update');
+        Route::delete('/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     });
     Route::prefix('item-categories')->group(function() {
         Route::get('/', [ItemCategoryController::class, 'index'])->name('item-categories.index');

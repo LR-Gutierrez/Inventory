@@ -1,4 +1,16 @@
 $(document).ready(function () {
+    $('.liveIDnumber').val(function (index, value) {
+        return value
+            .replace(/\D/g, "")
+            .replace(/([0-9])([0-9]{3})$/, "$1 $2")
+            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, " ");
+    });
+    $('.liveIDtext').text(function (index, value) {
+        return value
+            .replace(/\D/g, "")
+            .replace(/([0-9])([0-9]{3})$/, "$1 $2")
+            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, " ");
+    });
     $(".IDnumber").on({
         focus: function (event) {
             $(event.target).select();
@@ -36,4 +48,5 @@ $(document).ready(function () {
             });
         },
     })
+    $('.phone').mask('+00 (000) 000-0000');
 });
