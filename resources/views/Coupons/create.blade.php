@@ -1,6 +1,6 @@
 @extends('..dashboard')
 
-@section('title', 'Register User')
+@section('title', 'Create coupons')
 
 @section('content')
     {{-- Breadcrumb --}}
@@ -60,12 +60,21 @@
                             <input type="text" name="description" id="description" placeholder="Enter the coupon description" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="50" value="{{ old('description') }}">
                         </div>
                         <div>
+                            <label for="discount_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount amount</label>
+                            <div class="flex">
+                                <input type="text" name="discount_amount" id="discount_amount" class="integerNumbers rounded-none rounded-l-md bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the discount amount" maxlength="3">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-r-lg dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <i class="fa-solid fa-percent w-4 h-4 text-gray-500 dark:text-gray-400"></i> Off
+                                </span>
+                            </div>
+                        </div>
+                        <div>
                             <label for="coupon_code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon Code</label>
                             <input type="text" name="coupon_code" id="coupon_code" placeholder="Enter the coupon code" class="UpperCase bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="50" value="{{ old('coupon_code') }}">
                         </div>
                         <div>
                             <label for="claimable" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Claimable</label>
-                            <input type="text" name="claimable" id="claimable" placeholder="Enter the Number of times claimable" class="numbers bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="9" value="{{ old('claimable') }}">
+                            <input type="text" name="claimable" id="claimable" placeholder="Enter the Number of times claimable" class="floatNumbers bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="9" value="{{ old('claimable') }}">
                         </div>
                     </div>
                     <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-plus"></i> Create</button>

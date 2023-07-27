@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->integer('discount_amount');
             $table->string('coupon_code')->unique();
             $table->integer('claimable');
             $table->timestamps();
