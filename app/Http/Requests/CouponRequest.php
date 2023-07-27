@@ -24,6 +24,7 @@ class CouponRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required',
+            'discount_amount' => 'required',
             'coupon_code' => 'required',
             'claimable' => 'required',
         ];

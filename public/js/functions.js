@@ -24,11 +24,24 @@ $(document).ready(function () {
             });
         },
     });
-    $(".numbers").on({
+    $(".floatNumbers").on({
         focus: function (event) {
             $(event.target).select();
         },
         keyup: function (event) {
+            $(event.target).val(function (index, value) {
+				return value
+					.replace(/\D/g, "")
+					.replace(/([0-9])([0-9]{2})$/, "$1.$2")
+					.replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+			});
+        },
+    });
+    $('.integerNumbers').on({
+        focus: function (event) {
+            $(event.target).select();
+        },
+        keyup: function (event){
             $(event.target).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
@@ -36,7 +49,7 @@ $(document).ready(function () {
                     .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
             });
         },
-    });
+    })
     $('.UpperCase').on({
         focus: function (event) {
             $(event.target).select();
@@ -47,6 +60,6 @@ $(document).ready(function () {
                 .toUpperCase();
             });
         },
-    })
+    });
     $('.phone').mask('+00 (000) 000-0000');
 });

@@ -10,16 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CouponController extends Controller
 {
-    /* public function index(){
-        $order = '';
-        if (request()->has('order')) {
-            $order  = request('order') == 'asc' ? 'asc' : 'desc';     
-            $coupons = Coupon::orderBy('id', $order)->paginate(5)->appends(['order' => $order]);
-        }else {
-            $coupons = Coupon::orderBy('id', 'asc')->paginate(5);
-        }
-        return view('coupons.index', ['coupons' => $coupons, 'order' => $order, 'status' => '']);
-    } */
     public function index(){
         $order = '';
         $status = '';
@@ -51,6 +41,7 @@ class CouponController extends Controller
                 $coupon = new Coupon;
                 $coupon->name = ucwords($request->name);
                 $coupon->description = ucwords($request->description);
+                $coupon->discount_amount = str_replace('%','', $request->discount_amount);
                 $coupon->coupon_code = strtoupper($request->coupon_code);
                 $coupon->claimable = $claimable;
                 $coupon->created_by = Auth::user()->id;
@@ -75,6 +66,7 @@ class CouponController extends Controller
                 $coupon = Coupon::find($id);
                 $coupon->name = ucwords($request->name);
                 $coupon->description = ucwords($request->description);
+                $coupon->discount_amount = str_replace('%','', $request->discount_amount);
                 $coupon->coupon_code = strtoupper($request->coupon_code);
                 $coupon->claimable = $claimable;
                 $coupon->updated_by = Auth::user()->id;
@@ -83,5 +75,25 @@ class CouponController extends Controller
                 return to_route('coupons.index')->with('success', 'The coupon code has been successfully saved.');
             }
         }
+    }
+    public function destroy($id){
+        $coupon = Coupon::findOrFail($id);
+        $coupon->delete();
+        
+        return to_route('coupons.index')->with('success', 'The coupon has been successfully deleted.');
+    }
+    public function desactivate($id){
+        $coupon = Coupon::findOrFail($id);
+        $coupon->status = false;
+        $coupon->save();
+        
+        return to_route('coupons.index')->with('success', 'The coupon has been successfully desactivated');
+    }
+    public function activate($id){
+        $coupon = Coupon::findOrFail($id);
+        $coupon->status = true;
+        $coupon->save();
+        
+        return to_route('coupons.index')->with('success', 'The coupon has been successfully activated');
     }
 }

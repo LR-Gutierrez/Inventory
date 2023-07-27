@@ -1,6 +1,6 @@
 @extends('..dashboard')
 
-@section('title', 'Users')
+@section('title', 'Coupon codes')
 
 @section('content')
     <nav class="flex pb-3" aria-label="Breadcrumb">
@@ -178,13 +178,14 @@
             </div>
         </div>
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="users-table">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="coupon-table">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-4 py-3">ID</th>
                         <th scope="col" class="px-4 py-3">Name</th>
                         <th scope="col" class="px-4 py-3">Description</th>
                         <th scope="col" class="px-4 py-3">Coupon Code</th>
+                        <th scope="col" class="px-4 py-3">Discount amount</th>
                         <th scope="col" class="px-4 py-3">Claimable</th>
                         <th scope="col" class="px-4 py-3">Status</th>
                         <th scope="col" class="px-4 py-3">Actions</th>
@@ -197,6 +198,7 @@
                         <td class="px-4 py-3">{{ $coupon->name }}</td>
                         <td class="px-4 py-3">{{ $coupon->description }}</td>
                         <td class="px-4 py-3">{{ $coupon->coupon_code }}</td>
+                        <td class="px-4 py-3">{{ $coupon->discount_amount }}% Off</td>
                         <td class="px-4 py-3">{{ number_format($coupon->claimable) }}</td>
                         @if ($coupon->status == true)
                             <td class="px-4 py-3">Active <i class="text-green-500 fa-regular fa-circle-check"></i></td>
@@ -204,11 +206,26 @@
                             <td class="px-4 py-3">Inactive <i class="text-red-600 fa-regular fa-circle-xmark"></i></td>
                         @endif
                         <td class="px-4 py-3 flex items-center justify-center">
-                            <button id="user-{{$coupon->id}}-dropdown-button" data-dropdown-toggle="user-{{$coupon->id}}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                            <button id="coupon-{{$coupon->id}}-dropdown-button" data-dropdown-toggle="coupon-{{$coupon->id}}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                 <i class="fa-solid fa-ellipsis text-xl"></i>
                             </button>
-                            <div id="user-{{$coupon->id}}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="user-{{$coupon->id}}-dropdown-button">
+                            <div id="coupon-{{$coupon->id}}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                @if ($coupon->status == false)
+                                    <form action="{{ route('coupons.activate', ['id' => $coupon->id]) }}" method="POST">
+                                        @method('PATCH')
+                                        <div class="py-1">
+                                            <button type="submit" class="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Activate</button>
+                                        </div>
+                                    </form>
+                                @else
+                                    <form action="{{ route('coupons.desactivate', ['id' => $coupon->id]) }}" method="POST">
+                                        @method('PATCH')
+                                        <div class="py-1">
+                                            <button type="submit" class="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Desactivate</button>
+                                        </div>
+                                    </form>
+                                @endif
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="coupon-{{$coupon->id}}-dropdown-button">
                                     <li>
                                         <a href="{{ route('coupons.edit', ['id' => $coupon->id]) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                     </li>

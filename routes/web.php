@@ -58,5 +58,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [CouponController::class, 'edit'])->name('coupons.edit');
         Route::put('/{id}', [CouponController::class, 'update'])->name('coupons.update');
         Route::delete('/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
+        Route::patch('/desactivate/{id}', [CouponController::class, 'desactivate'])->name('coupons.desactivate');
+        Route::patch('/activate/{id}', [CouponController::class, 'activate'])->name('coupons.activate');
     });
 });
