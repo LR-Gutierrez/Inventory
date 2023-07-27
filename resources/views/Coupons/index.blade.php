@@ -186,7 +186,7 @@
                         <th scope="col" class="px-4 py-3">Description</th>
                         <th scope="col" class="px-4 py-3">Coupon Code</th>
                         <th scope="col" class="px-4 py-3">Discount amount</th>
-                        <th scope="col" class="px-4 py-3">Claimable</th>
+                        <th scope="col" class="px-4 py-3">Claimable times</th>
                         <th scope="col" class="px-4 py-3">Status</th>
                         <th scope="col" class="px-4 py-3">Actions</th>
                     </tr>
