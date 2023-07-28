@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessManagerController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
@@ -60,5 +61,13 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::delete('/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
         Route::patch('/desactivate/{id}', [CouponController::class, 'desactivate'])->name('coupons.desactivate');
         Route::patch('/activate/{id}', [CouponController::class, 'activate'])->name('coupons.activate');
+    });
+    Route::prefix('business-managers')->group(function() {
+        Route::get('/', [BusinessManagerController::class, 'index'])->name('business-managers.index');
+        Route::get('/create', [BusinessManagerController::class, 'create'])->name('business-managers.create');
+        Route::post('/create', [BusinessManagerController::class, 'store'])->name('business-managers.store');
+        Route::get('/{id}', [BusinessManagerController::class, 'edit'])->name('business-managers.edit');
+        Route::put('/{id}', [BusinessManagerController::class, 'update'])->name('business-managers.update');
+        Route::delete('/{id}', [BusinessManagerController::class, 'destroy'])->name('business-managers.destroy');
     });
 });
