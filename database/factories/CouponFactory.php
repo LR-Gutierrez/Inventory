@@ -19,10 +19,12 @@ class CouponFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->sentence(3),
-            'coupon_code' => fake()->bothify('??????###'),
+            'discount_amount' => fake()->numberBetween(1, 100),
+            'coupon_code' => strtoupper(fake()->bothify('??????###')),
             'claimable' => fake()->randomNumber(),
             'created_by' => fake()->numberBetween(1, 10),
             'created_at' => now(),
+            'status' => fake()->boolean(50),
         ];
     }
 }

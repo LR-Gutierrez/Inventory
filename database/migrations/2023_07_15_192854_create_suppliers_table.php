@@ -26,7 +26,8 @@ return new class extends Migration
 
             $table->foreign('business_manager_id')->references('id')->on('business_managers')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');        });
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');        
+        });
     }
 
     /**

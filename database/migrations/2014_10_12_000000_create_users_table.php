@@ -16,12 +16,14 @@ return new class extends Migration
             $table->string('dni');
             $table->string('name');
             $table->string('lastname');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->rememberToken();
+            $table->boolean('status')->default(true)->nullable();
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
