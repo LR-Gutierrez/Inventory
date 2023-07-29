@@ -6,6 +6,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,15 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::delete('/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
         Route::patch('/desactivate/{id}', [CouponController::class, 'desactivate'])->name('coupons.desactivate');
         Route::patch('/activate/{id}', [CouponController::class, 'activate'])->name('coupons.activate');
+    });
+    Route::prefix('suppliers')->group(function() {
+        Route::get('/', [SupplierController::class, 'index'])->name('suppliers.index');
+        Route::post('/search-business_manager', [SupplierController::class, 'search'])->name('suppliers.search');
+        Route::get('/create', [SupplierController::class, 'create'])->name('suppliers.create');
+        Route::post('/create', [SupplierController::class, 'store'])->name('suppliers.store');
+        Route::get('/{id}', [SupplierController::class, 'edit'])->name('suppliers.edit');
+        Route::put('/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
+        Route::delete('/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
     });
     Route::prefix('business-managers')->group(function() {
         Route::get('/', [BusinessManagerController::class, 'index'])->name('business-managers.index');
