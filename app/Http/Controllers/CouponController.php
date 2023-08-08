@@ -25,10 +25,10 @@ class CouponController extends Controller
                 $coupons = Coupon::orderBy('id', 'asc')->paginate(5);
             }
         }
-        return view('coupons.index', ['coupons' => $coupons, 'order' => $order, 'status' => $status]);
+        return view('Coupons.index', ['coupons' => $coupons, 'order' => $order, 'status' => $status]);
     }
     public function create(){
-        return view('coupons.create');
+        return view('Coupons.create');
     }
     public function store(CouponRequest $request){
         if (Coupon::where('coupon_code', strtoupper($request->coupon_code))->exists()) {
@@ -47,7 +47,7 @@ class CouponController extends Controller
                 $coupon->created_by = Auth::user()->id;
                 $coupon->save();
                 
-                return to_route('coupons.index')->with('success', 'The coupon code has been successfully created.');
+                return to_route('Coupons.index')->with('success', 'The coupon code has been successfully created.');
             }
         }
     }
@@ -72,7 +72,7 @@ class CouponController extends Controller
                 $coupon->updated_by = Auth::user()->id;
                 $coupon->save();
                 
-                return to_route('coupons.index')->with('success', 'The coupon code has been successfully saved.');
+                return to_route('Coupons.index')->with('success', 'The coupon code has been successfully saved.');
             }
         }
     }
@@ -80,20 +80,20 @@ class CouponController extends Controller
         $coupon = Coupon::findOrFail($id);
         $coupon->delete();
         
-        return to_route('coupons.index')->with('success', 'The coupon has been successfully deleted.');
+        return to_route('Coupons.index')->with('success', 'The coupon has been successfully deleted.');
     }
     public function desactivate($id){
         $coupon = Coupon::findOrFail($id);
         $coupon->status = false;
         $coupon->save();
         
-        return to_route('coupons.index')->with('success', 'The coupon has been successfully desactivated');
+        return to_route('Coupons.index')->with('success', 'The coupon has been successfully desactivated');
     }
     public function activate($id){
         $coupon = Coupon::findOrFail($id);
         $coupon->status = true;
         $coupon->save();
         
-        return to_route('coupons.index')->with('success', 'The coupon has been successfully activated');
+        return to_route('Coupons.index')->with('success', 'The coupon has been successfully activated');
     }
 }
