@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('detail_sales', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sale_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('item_quantity');
             $table->float('price');
             $table->timestamps();
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
 
-            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('temp_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('item_quantity');
             $table->float('price');
             $table->timestamps();
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

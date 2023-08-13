@@ -17,18 +17,18 @@ return new class extends Migration
             $table->string('description');
             $table->integer('item_quantity');
             $table->float('price');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('item_category_id');
+            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('item_category_id')->nullable();
             $table->timestamp('expiration_date')->nullable();
             $table->timestamps();
 
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
 
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('item_category_id')->references('id')->on('item_categories')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('item_category_id')->references('id')->on('item_categories')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
