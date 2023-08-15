@@ -46,11 +46,11 @@ $(document).ready(function () {
             $(event.target).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
-                    .replace(/([0-9])([0-9]{3})$/, "$1,$2")
+                    .replace(/([0-9])([0-9]{2})$/, "$1,$2")
                     .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
             });
         },
-    })
+    });
     $('.UpperCase').on({
         focus: function (event) {
             $(event.target).select();
