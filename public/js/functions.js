@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#business_manager-dropdown').hide();
+    $('#business_manager-dropdown, #info_supplier-dropdown').hide();
     $('.liveIDnumber').val(function (index, value) {
         return value
             .replace(/\D/g, "")
@@ -48,6 +48,18 @@ $(document).ready(function () {
                     .replace(/\D/g, "")
                     .replace(/([0-9])([0-9]{2})$/, "$1.$2")
                     .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+            });
+        },
+    });
+    $('.onlyNumbers').on({
+        focus: function (event) {
+            $(event.target).select();
+        },
+        keyup: function (event){
+            $(event.target).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/([0-9])([0-9])$/, "$1$2");
             });
         },
     });
@@ -130,6 +142,36 @@ $(document).ready(function () {
         } else $("#business_manager-dropdown").slideUp();
     });
     $('.showOneTime').slideDown();
-
+    $('#item_category_id').on("change", function(){
+        if ($(this).val() != "") {
+            if ($(this).val() == "1") {
+                $("#new_category_wrapper").slideDown();
+                // data
+            }else{
+                $("#new_category_wrapper").slideUp();
+                $("#new_category").val('');
+                // clear data
+            }
+        } else {
+            $("#new_category_wrapper").slideUp();
+            $("#new_category").val('');
+        }
+    });
+    $('#supplier_id').on("change", function(){
+        if ($(this).val() != "") {
+            if ($(this).val() == "new") {
+                $("#info_supplier-dropdown").slideDown();
+                // data
+            }else{
+                $("#info_supplier-dropdown").slideUp();
+                // $("#new_category").val('');
+                // clear data
+            }
+        } else {
+            $("#info_supplier-dropdown").slideUp();
+            // $("#new_category").val('');
+        }
+    });
+    
 
 });

@@ -129,7 +129,11 @@
                         <td class="px-4 py-3">{{ $product->description }}</td>
                         <td class="px-4 py-3">{{ $product->item_quantity }}</td>
                         <td class="px-4 py-3" title="{{ number_format($product->price, 2) }} Dollars">{{ number_format($product->price, 2) }}</td>
-                        <td class="px-4 py-3" title="{{ $product->suppliers->company_name }} - TIN: {{ $product->suppliers->tin }}">{{ $product->suppliers->company_name }}</td>
+                        @if(isset($product->suppliers->company_name))
+                            <td class="px-4 py-3" title="{{ $product->suppliers->company_name }} - TIN: {{ $product->suppliers->tin }}">{{ $product->suppliers->company_name }}</td>
+                        @else
+                            <td class="px-4 py-3" title="This product doesn't have a registered supplier.">N/A</td>
+                        @endif
                         <td class="px-4 py-3">{{ $product->itemCategory->description }}</td>
                         <td class="px-4 py-3">{{ $product->expiration_date ? date('d-m-Y', strtotime($product->expiration_date)) : 'Does not expire' }}</td>
                         <td class="px-4 py-3 flex items-center justify-center">
