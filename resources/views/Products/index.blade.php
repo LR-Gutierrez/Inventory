@@ -128,7 +128,7 @@
                         <td class="px-4 py-3">{{ $product->name }}</td>
                         <td class="px-4 py-3">{{ $product->description }}</td>
                         <td class="px-4 py-3">{{ $product->item_quantity }}</td>
-                        <td class="px-4 py-3">{{ $product->price }}</td>
+                        <td class="px-4 py-3" title="{{ number_format($product->price, 2) }} Dollars">{{ number_format($product->price, 2) }}</td>
                         <td class="px-4 py-3" title="{{ $product->suppliers->company_name }} - TIN: {{ $product->suppliers->tin }}">{{ $product->suppliers->company_name }}</td>
                         <td class="px-4 py-3">{{ $product->itemCategory->description }}</td>
                         <td class="px-4 py-3">{{ $product->expiration_date ? date('d-m-Y', strtotime($product->expiration_date)) : 'Does not expire' }}</td>

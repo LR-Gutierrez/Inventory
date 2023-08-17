@@ -28,16 +28,22 @@ class ProductController extends Controller
         return view('Products.create', ['suppliers' => $supplier, 'itemCategories' => $itemCategories]);
     }
     public function store(Request $request){
+        
+        $supplier_id = $request->supplier_id == 'none' ? null : $request->supplier_id;
         $product = new Product;
         $product->name = ucwords($request->name);
         $product->description = ucwords($request->description);
         $product->item_quantity = $request->item_quantity;
-        $product->price = str_replace(' ', '', trim($request->price));
+        $product->price = str_replace(',', '', $request->price);
         $product->supplier_id = $request->supplier_id;
         $product->item_category_id = $request->item_category_id;
         $product->expiration_date = $request->expiration_date;
         $product->created_by = Auth::user()->id;
         $product->save();
-        return to_route('users.index')->with('success', 'The user has successfully registered.');
+        return to_route('products.index')->with('success', 'The product has successfully registered.');
+    }
+    public function edit($id){
+        $product = Product::find($id);
+        return view('Products}.edit', ['product' => $product]);
     }
 }
