@@ -95,11 +95,10 @@
                         <input type="text" name="new_category" id="new_category" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the category description" value="{{ old('new_category') }}" maxlength="11">
                     </div>
                 </div>
-                {{-- _asdfasdf --}}
                 <div id="info_supplier-dropdown">
                     <div id="business_manager-title">
                         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-1xl dark:text-white border-b border-gray-300 dark:border-gray-600 my-3">
-                            General business manager information
+                            General supplier information
                         </h1>
                     </div>
                     <div class="grid grid-cols-2 gap-6">

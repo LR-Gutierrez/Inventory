@@ -3,6 +3,7 @@
 @section('title', 'Edit products')
 
 @section('content')
+
     <nav class="flex pb-3" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
@@ -73,11 +74,11 @@
                 <div>
                     <label for="business_manager" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a business manager</label>
                     <select name="business_manager" id="business_manager" class="bg-gray-50 border border-gray-300 mb-3 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="{{ $product->business_manager_id }}" class="text-center">{{ $product->businessManager }} {{ $product->businessManager->lastname }}</option>
+                        <option value="{{ $product->business_manager_id }}" class="text-center" selected disabled>{{ $product->suppliers->businessManager->name }} {{ $product->suppliers->businessManager->lastname }}</option>
                         <option value="new" class="text-center">Register new</option>
-                        {{-- @foreach ($businessManagers as $businessManager)
+                        @foreach ($businessManagers as $businessManager)
                             <option value="{{ $businessManager->id }}">{{ $businessManager->name }}</option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
                 <div id="business_manager-dropdown" class="showOneTime">
@@ -89,19 +90,19 @@
                     <div id="business_manager-form" class="grid grid-cols-2 gap-6">
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="name" name="business_manager_name" id="business_manager_name" placeholder="Enter your manager name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $product->businessManager->name }}" maxlength="50">
+                            <input type="name" name="business_manager_name" id="business_manager_name" placeholder="Enter your manager name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $product->suppliers->businessManager->name }}" maxlength="50">
                         </div>
                         <div>
                             <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname</label>
-                            <input type="lastname" name="business_manager_lastname" id="business_manager_lastname" placeholder="Enter your manager lastname" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $product->businessManager->lastname }}" maxlength="50">
+                            <input type="lastname" name="business_manager_lastname" id="business_manager_lastname" placeholder="Enter your manager lastname" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $product->suppliers->businessManager->lastname }}" maxlength="50">
                         </div>
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input type="email" name="business_manager_email" id="business_manager_email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@example.com" value="{{ $product->businessManager->email }}">
+                            <input type="email" name="business_manager_email" id="business_manager_email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@example.com" value="{{ $product->suppliers->businessManager->email }}">
                         </div>
                         <div>
                             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                            <input type="text" name="business_manager_phone" id="business_manager_phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. +1 (701) 267-2223" minlength="13" value="{{ $product->businessManager->phone }}">
+                            <input type="text" name="business_manager_phone" id="business_manager_phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. +1 (701) 267-2223" minlength="13" value="{{ $product->suppliers->businessManager->phone }}">
                         </div>
                     </div>
                 </div>

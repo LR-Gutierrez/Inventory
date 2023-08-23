@@ -38,7 +38,52 @@ class ProductController extends Controller
             'price' => 'required',
             'item_category_id' => 'required',
         ]);
-        $supplier_id = $request->supplier_id == 'none' ? null : $request->supplier_id;
+        // suppliers
+        if ($request->supplier_id == 'none') {
+            $supplier_id = null;
+        }elseif($request->supplier_id == 'new'){
+            $request->validate([
+                'company_name' => 'required|max:255|unique:suppliers,company_name',
+                'tin' => 'required|max:255|unique:suppliers,tin',
+                'address' => 'required',
+                'phone' => 'required|max:255|min:13|unique:suppliers,phone',
+                'email' => 'required|email|unique:suppliers,email',
+                'business_manager' => 'required',
+            ]);
+            if ($request->business_manager == 'new') {
+                $request->validate([
+                    'name' => 'required|max:255',
+                    'lastname' => 'required|max:255',
+                    'email' => 'required|email|unique:business_managers,email',
+                    'phone' => 'required|max:255|unique:business_managers,phone',
+                ]);
+                $businessManager = new BusinessManager();
+                $businessManager->name = ucwords($request->business_manager_name);
+                $businessManager->lastname = ucwords($request->business_manager_lastname);
+                $businessManager->email = $request->business_manager_email;
+                $businessManager->phone = $request->business_manager_phone;
+                $businessManager->created_by = Auth::user()->id;
+                $businessManager->save();
+                $businessManager_id = $businessManager->id; 
+            }else{
+                $businessManager_id = $request->business_manager;
+            }
+            
+            $supplier = new Supplier();
+            $supplier->company_name = ucwords($request->company_name);
+            $supplier->tin = ucwords($request->tin);
+            $supplier->address = $request->address;
+            $supplier->phone = $request->phone;
+            $supplier->email = $request->email;
+            $supplier->website = $request->website;
+            $supplier->business_manager_id = $businessManager_id;
+            $supplier->created_by = Auth::user()->id;
+            $supplier->save();
+            $supplier_id = $supplier->id;
+        }else {
+            $supplier_id = $request->supplier_id;
+        }
+        // item category
         if ($request->item_category_id == 1){
             $request->validate([
                 'new_category' => 'required',
@@ -65,6 +110,7 @@ class ProductController extends Controller
     }
     public function edit($id){
         $product = Product::find($id);
-        return view('Products}.edit', ['product' => $product]);
+        $businessManagers = BusinessManager::all();
+        return view('Products.edit', ['product' => $product, 'businessManagers' => $businessManagers]);
     }
 }

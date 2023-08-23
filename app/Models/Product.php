@@ -17,4 +17,8 @@ class Product extends Model
     {
         return $this->belongsTo(ItemCategory::class);
     }
+    /* public function businessManager()
+    {
+        return $this->belongsTo(BusinessManager::class, '');
+    } */
 }
