@@ -6,6 +6,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -79,5 +80,15 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [BusinessManagerController::class, 'edit'])->name('business-managers.edit');
         Route::put('/{id}', [BusinessManagerController::class, 'update'])->name('business-managers.update');
         Route::delete('/{id}', [BusinessManagerController::class, 'destroy'])->name('business-managers.destroy');
+    });
+    Route::prefix('sales')->group(function() {
+        Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+        Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+        Route::post('/create', [SaleController::class, 'store'])->name('sales.store');
+        Route::get('/{id}', [SaleController::class, 'edit'])->name('sales.edit');
+        Route::put('/{id}', [SaleController::class, 'update'])->name('sales.update');
+        Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
+        Route::patch('/desactivate/{id}', [SaleController::class, 'desactivate'])->name('sales.desactivate');
+        Route::patch('/activate/{id}', [SaleController::class, 'activate'])->name('sales.activate');
     });
 });
