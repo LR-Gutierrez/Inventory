@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#business_manager-dropdown').hide();
+    $('#business_manager-dropdown, .customer-info').hide();
     $('.liveIDnumber').val(function (index, value) {
         return value
             .replace(/\D/g, "")
@@ -130,4 +130,7 @@ $(document).ready(function () {
         } else $("#business_manager-dropdown").slideUp();
     });
     $('.showOneTime').slideDown();
+    $('#search-dni').on("keyup", function(){
+        console.log($(this).val())
+    });
 });
