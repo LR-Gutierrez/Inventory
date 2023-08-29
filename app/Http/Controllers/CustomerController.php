@@ -20,7 +20,7 @@ class CustomerController extends Controller
         return view('Customers.index', ['customers' => $customers, 'order' => $order, 'status' => '']);
     }
     public function create(){
-        return view('customers.create');
+        return view('Customers.create');
     }
     public function store(Request $request){
         $request->validate([
@@ -42,7 +42,7 @@ class CustomerController extends Controller
     }
     public function edit($id){
         $customer = Customer::find($id);
-        return view('customers.edit', ['customer' => $customer]);
+        return view('Customers.edit', ['customer' => $customer]);
     }
     public function update(Request $request, $id){
         $request->validate([
