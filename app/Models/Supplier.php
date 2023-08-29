@@ -13,4 +13,8 @@ class Supplier extends Model
     {
         return $this->belongsTo(BusinessManager::class);
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

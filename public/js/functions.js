@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $('#business_manager-dropdown').hide();
+    $('#business_manager-dropdown, #info_supplier-dropdown').hide();
+    
     $('.liveIDnumber').val(function (index, value) {
         return value
             .replace(/\D/g, "")
@@ -46,11 +47,23 @@ $(document).ready(function () {
             $(event.target).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
-                    .replace(/([0-9])([0-9]{3})$/, "$1,$2")
+                    .replace(/([0-9])([0-9]{2})$/, "$1.$2")
                     .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
             });
         },
-    })
+    });
+    $('.onlyNumbers').on({
+        focus: function (event) {
+            $(event.target).select();
+        },
+        keyup: function (event){
+            $(event.target).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/([0-9])([0-9])$/, "$1$2");
+            });
+        },
+    });
     $('.UpperCase').on({
         focus: function (event) {
             $(event.target).select();
@@ -63,6 +76,37 @@ $(document).ready(function () {
         },
     });
     $('.phone').mask('+00 (000) 000-0000');
+    // $('.url').mask('https://S?{*.}');
+    // $('.url').mask('AAA 000-S0S');
+    /*$('.url').on("input", function() {
+        let checker = 'https://';
+        let inputValue = $(this).val();
+        let check = inputValue.startsWith("https://")
+        if(e.keyCode === 8 && $(this).val().length <= 8){
+            e.preventDefault();
+        }
+        if(inputValue.substring(0,8) != 'https://'){
+            $(this).val('https://' + inputValue);
+        }
+        if (check == true) {
+            console.log(check +'d | ' +$('.url').val());
+            $(this).val(checker);
+        }else{
+            console.log(check +' | ' +$('.url').val());
+            $(this).val(checker + inputValue);
+        }
+    });*/
+    $('.url').on('input', function(){
+        let val = $(this).val();
+        if(!val.startsWith('https://')){
+          $(this).val('https://' + val);
+        }
+    });
+    $('.url').on('keydown', function(e){
+        if(e.keyCode === 8 && $(this).val() === 'https://'){
+            e.preventDefault();
+        }
+    });
     $("#business_manager").change(function () {
         let business_manager_id = $(this).val();
 
@@ -130,4 +174,36 @@ $(document).ready(function () {
         } else $("#business_manager-dropdown").slideUp();
     });
     $('.showOneTime').slideDown();
+    $('#item_category_id').on("change", function(){
+        if ($(this).val() != "") {
+            if ($(this).val() == "new") {
+                $("#new_category_wrapper").slideDown();
+                // data
+            }else{
+                $("#new_category_wrapper").slideUp();
+                $("#new_category").val('');
+                // clear data
+            }
+        } else {
+            $("#new_category_wrapper").slideUp();
+            $("#new_category").val('');
+        }
+    });
+    $('#supplier_id').on("change", function(){
+        if ($(this).val() != "") {
+            if ($(this).val() == "new") {
+                $("#info_supplier-dropdown").slideDown();
+                // data
+            }else{
+                $("#info_supplier-dropdown").slideUp();
+                // $("#new_category").val('');
+                // clear data
+            }
+        } else {
+            $("#info_supplier-dropdown").slideUp();
+            // $("#new_category").val('');
+        }
+    });
+    
+
 });

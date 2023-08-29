@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
 
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('no action')->onUpdate('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('no action')->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('no action')->onUpdate('cascade');
         });
     }
