@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#business_manager-dropdown, #info_supplier-dropdown').hide();
+    
     $('.liveIDnumber').val(function (index, value) {
         return value
             .replace(/\D/g, "")
@@ -75,6 +76,37 @@ $(document).ready(function () {
         },
     });
     $('.phone').mask('+00 (000) 000-0000');
+    // $('.url').mask('https://S?{*.}');
+    // $('.url').mask('AAA 000-S0S');
+    /*$('.url').on("input", function() {
+        let checker = 'https://';
+        let inputValue = $(this).val();
+        let check = inputValue.startsWith("https://")
+        if(e.keyCode === 8 && $(this).val().length <= 8){
+            e.preventDefault();
+        }
+        if(inputValue.substring(0,8) != 'https://'){
+            $(this).val('https://' + inputValue);
+        }
+        if (check == true) {
+            console.log(check +'d | ' +$('.url').val());
+            $(this).val(checker);
+        }else{
+            console.log(check +' | ' +$('.url').val());
+            $(this).val(checker + inputValue);
+        }
+    });*/
+    $('.url').on('input', function(){
+        let val = $(this).val();
+        if(!val.startsWith('https://')){
+          $(this).val('https://' + val);
+        }
+    });
+    $('.url').on('keydown', function(e){
+        if(e.keyCode === 8 && $(this).val() === 'https://'){
+            e.preventDefault();
+        }
+    });
     $("#business_manager").change(function () {
         let business_manager_id = $(this).val();
 
@@ -144,7 +176,7 @@ $(document).ready(function () {
     $('.showOneTime').slideDown();
     $('#item_category_id').on("change", function(){
         if ($(this).val() != "") {
-            if ($(this).val() == "1") {
+            if ($(this).val() == "new") {
                 $("#new_category_wrapper").slideDown();
                 // data
             }else{
