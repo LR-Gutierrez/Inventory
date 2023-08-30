@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->integer('item_quantity');
             $table->float('price');
-            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('item_category_id');
             $table->timestamp('expiration_date')->nullable();
             $table->timestamps();

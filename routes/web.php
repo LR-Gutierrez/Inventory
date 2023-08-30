@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,15 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+    Route::prefix('products')->group(function() {
+        Route::get('/', [ProductController::class, 'index'])->name('products.index');
+        Route::post('/search-business_manager', [ProductController::class, 'search'])->name('products.search');
+        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/create', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/{id}', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     });
     Route::prefix('customers')->group(function() {
         Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
