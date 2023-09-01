@@ -55,6 +55,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
         Route::put('/{id}', [CustomerController::class, 'update'])->name('customers.update');
         Route::delete('/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+        Route::post('/search-customers', [CustomerController::class, 'search'])->name('customers.search');
     });
     Route::prefix('item-categories')->group(function() {
         Route::get('/', [ItemCategoryController::class, 'index'])->name('item-categories.index');

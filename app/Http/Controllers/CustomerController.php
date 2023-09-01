@@ -68,4 +68,21 @@ class CustomerController extends Controller
 
         return to_route('customers.index')->with('success', 'The customer has been deleted successfully.');
     }
+    public function search(Request $request){
+        if ($request->dni) {
+            $dni = $request->dni;
+            $business_manager = Customer::where('dni', $dni)->first();
+            if (Customer::where('dni', $dni)->exists() === true) {
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Client found!',
+                    'data' => $business_manager
+                ];
+                return response()->json($response, 200);
+            }         
+    
+        }else{
+            return null;
+        }
+    }
 }

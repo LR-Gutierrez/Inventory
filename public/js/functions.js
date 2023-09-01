@@ -204,9 +204,30 @@ $(document).ready(function () {
             // $("#new_category").val('');
         }
     });
-    
-
     $('#search-dni').on("keyup", function(){
-        console.log($(this).val())
+        let dni = $(this).val().replace(/\s+/g, ''); // "Hola,mundo!"
+        $.post({
+            url: '/dashboard/customers/search-customers/',
+            type: 'POST',
+            data: {dni: dni},
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                console.log(response);
+            }, fail: function(error){
+
+            }
+        });
+            // '/dashboard/customers/search-customers/'+$(this).val(), function(data) {
+            // Aquí puedes manejar la respuesta exitosa
+            // console.log(data);
+        /* })
+        .fail(function(error) {
+            // Aquí puedes manejar el error
+            console.log(error);
+        });
+ */
     });
 });
