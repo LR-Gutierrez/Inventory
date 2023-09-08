@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#business_manager-dropdown, #info_supplier-dropdown, .customer-info').hide();
+    $('#business_manager-dropdown, #info_supplier-dropdown, #info_supplier-dropdown, .customer-info').hide();
     $('.input-number').on('keydown', function(e) {
         if (e.keyCode == 40 && $(this).val() < 1 || e.keyCode == 13) {
             e.preventDefault();
@@ -14,6 +14,7 @@ $(document).ready(function () {
             $(this).val(999);
         }
     });
+    
     $('.liveIDnumber').val(function (index, value) {
         return value
             .replace(/\D/g, "")
