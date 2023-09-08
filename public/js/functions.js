@@ -233,25 +233,27 @@ $(document).ready(function () {
                 },
                 success: function(response) {
                     if (response.status === 'success') {
+                        $('#search_product').focus();
                         Swal.fire({
                             position: 'top-end',
                             icon: response.status,
                             title: response.message,
                             showConfirmButton: false,
                             timer: 1000
-                        }).then(function(){
-                            $('#client-name').text('Client name: ' + response.data.name).removeClass('hidden');
-                            $('#name').val(response.data.name);                    
-                            $('#lastname').val(response.data.lastname);                    
-                            $('#email').val(response.data.email);                    
-                            $('#phone').val(response.data.phone);                    
                         });
+                        $('#client-name').text('Client name: ' + response.data.name).removeClass('hidden');
+                        /* $('#name').val(response.data.name);                    
+                        $('#lastname').val(response.data.lastname);                    
+                        $('#email').val(response.data.email);                    
+                        $('#phone').val(response.data.phone); */
+                                      
+                        
                     }else{
                         $('#client-name').text('Client name: ').addClass('hidden');
-                        $('#name').val('');                    
+                        /* $('#name').val('');                    
                         $('#lastname').val('');                    
                         $('#email').val('');                    
-                        $('#phone').val('');                    
+                        $('#phone').val(''); */                    
                     }
                 }, fail: function(error){
 
@@ -263,12 +265,13 @@ $(document).ready(function () {
         $.post({
             url: '/dashboard/products/search-products/',
             type: 'POST',
-            data: {search_field: $(this).val()},
+            data: {search_field: $(this).val(), dni: $('#search-dni').val()},
             dataType: 'json',
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
+                console.log(response)
                 if (response.status === 'success') {
                     var found = false;
                     $('#table-body tr').each(function() {

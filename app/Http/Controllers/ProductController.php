@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusinessManager;
+use App\Models\Customer;
 use App\Models\ItemCategory;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\TempOrder;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -205,6 +207,7 @@ class ProductController extends Controller
     public function search(Request $request){
         if ($request->search_field) {
             $search_field = $request->search_field;
+            $dni = is_numeric(str_replace(' ', '', trim($request->dni))) ? $dni = str_replace(' ', '', trim($request->dni)) : $dni = '';
 
             $productExists = is_numeric($search_field) === true ? $productExists = Product::where('id', $search_field)->exists() : $productExists = Product::where('name', $search_field)->exists();
             if ($productExists === true) {
@@ -214,6 +217,41 @@ class ProductController extends Controller
                     'message' => 'Product founded!',
                     'data' => $product
                 ];
+                
+                if (!empty($dni)) {
+                    $customer = Customer::where('dni', $dni)->exists();
+                    if ($customer === false) {
+                        $response = [
+                            'status' => 'error',
+                            'message' => 'Client not found!',
+                            'data' => [],
+                        ];
+                        return response()->json($response, 404);
+                    }else {
+                        $customer = Customer::where('dni', $dni)->first();
+                        $count_temp_orders = TempOrder::where('customer_id', $customer->id)->where('product_id', $product->id)->count();         
+                        
+                        if ($count_temp_orders >= 1) {
+                            $action = TempOrder::where('customer_id', $customer->id)->where('product_id', $product->id)->first();
+                            $count_temp_orders = $action->item_quantity + 1;
+                            $price = $count_temp_orders * $product->price;
+                        }else {
+                            $action = new TempOrder();
+                            $count_temp_orders = 1;
+                            $price = $product->price;
+                        }
+
+                        $temp_order = $action;
+                        $temp_order->customer_id = $customer->id;
+                        $temp_order->product_id = $product->id;
+                        $temp_order->item_quantity = $count_temp_orders;
+                        $temp_order->price = $price;
+                        $temp_order->created_by = Auth::user()->id;
+                        $temp_order->save();
+                    }
+
+                }
+
                 return response()->json($response, 200);
             } else {
                 $response = [

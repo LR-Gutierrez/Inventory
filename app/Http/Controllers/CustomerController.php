@@ -85,7 +85,7 @@ class CustomerController extends Controller
                     'message' => 'Client not founded!',
                     'data' => []
                 ];
-                return response()->json($response, 200);
+                return response()->json($response, 404);
             }
     
         }else{
