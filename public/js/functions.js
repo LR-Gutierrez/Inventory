@@ -1,6 +1,19 @@
 $(document).ready(function () {
     $('#business_manager-dropdown, #info_supplier-dropdown, .customer-info').hide();
-    
+    $('.input-number').on('keydown', function(e) {
+        if (e.keyCode == 40 && $(this).val() < 1 || e.keyCode == 13) {
+            e.preventDefault();
+            this.val(1);
+        }
+    });
+    $('.input-number').on('input', function() {
+        if ($(this).val() < 1) {
+          $(this).val(1);
+        }
+        if ($(this).val() > 999) {
+            $(this).val(999);
+        }
+    });
     $('.liveIDnumber').val(function (index, value) {
         return value
             .replace(/\D/g, "")
@@ -204,30 +217,149 @@ $(document).ready(function () {
             // $("#new_category").val('');
         }
     });
+    var timeout = null;
     $('#search-dni').on("keyup", function(){
         let dni = $(this).val().replace(/\s+/g, ''); // "Hola,mundo!"
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            $.post({
+                url: '/dashboard/customers/search-customers/',
+                type: 'POST',
+                data: {dni: dni},
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: response.status,
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function(){
+                            $('#name').val(response.data.name);                    
+                            $('#lastname').val(response.data.lastname);                    
+                            $('#email').val(response.data.email);                    
+                            $('#phone').val(response.data.phone);                    
+                        });
+                    }else{
+                        $('#name').val('');                    
+                        $('#lastname').val('');                    
+                        $('#email').val('');                    
+                        $('#phone').val('');                    
+                    }
+                }, fail: function(error){
+
+                }
+            });
+        }, 400);
+    });
+    $('#search_product').on("keyup", function(){
         $.post({
-            url: '/dashboard/customers/search-customers/',
+            url: '/dashboard/products/search-products/',
             type: 'POST',
-            data: {dni: dni},
+            data: {search_field: $(this).val()},
             dataType: 'json',
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                console.log(response);
+                if (response.status === 'success') {
+                    var found = false;
+                    $('#table-body tr').each(function() {
+                        var name = $(this).find('th').text();
+                        var input = $(this).find('.input-number');
+                        if (name === response.data.name) {
+                            input.val(parseInt(input.val()) + 1);
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (!found) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: response.status,
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function(){
+                            var row = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600');
+                            var checkbox = $('<input>').attr({
+                                type: 'checkbox',
+                                class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600',
+                                id: 'checkbox-table-search-1'
+                            });
+                            var label = $('<label>').attr('for', 'checkbox-table-search-1').addClass('sr-only').text('checkbox');
+                            var cell = $('<td>').addClass('w-4 p-4').append($('<div>').addClass('flex items-center').append(checkbox).append(label));
+                            var name = $('<th>').addClass('px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white').attr('scope', 'row').text(response.data.name);
+                            var quantity = $('<td>').addClass('px-6 py-4').append($('<input>').attr({
+                                type: 'number',
+                                class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number',
+                                value: '1'
+                            }));
+                            var category = $('<td>').addClass('px-6 py-4').text(response.data.item_category.description);
+                            var price = $('<td>').addClass('px-6 py-4').text('$'+response.data.price);
+                            var remove = $('<td>').addClass('px-6 py-4').append($('<a>').attr({
+                                href: '#',
+                                'data-id': response.data.id,
+                                title: 'Remove product'
+                            }).addClass('font-medium text-red-600 dark:text-red-500 hover:underline').append($('<i>').addClass('fa-solid fa-trash-can removeFromCart')));
+                            row.append(cell).append(name).append(quantity).append(category).append(price).append(remove);
+                            $('#table-body').append(row);
+                            $('.input-number').on('keydown', function(e) {
+                                if (e.keyCode == 40 && $(this).val() < 1 || e.keyCode == 13) {
+                                    e.preventDefault();
+                                    this.val(1);
+                                }
+                            });
+                            $('.input-number').on('input', function() {
+                                if ($(this).val() < 1) {
+                                $(this).val(1);
+                                }
+                                if ($(this).val() > 999) {
+                                $(this).val(999);
+                                }
+                            });      
+                        });
+                    }else{
+                        $('#name').val('');                    
+                        $('#lastname').val('');                    
+                        $('#email').val('');                    
+                        $('#phone').val('');                    
+                    }
+                }
             }, fail: function(error){
-
+          
             }
         });
-            // '/dashboard/customers/search-customers/'+$(this).val(), function(data) {
-            // Aquí puedes manejar la respuesta exitosa
-            // console.log(data);
-        /* })
-        .fail(function(error) {
-            // Aquí puedes manejar el error
-            console.log(error);
-        });
- */
     });
+    /* $("#search_product").autocomplete({
+        source: function(request, response) {
+          $.ajax({
+            url: "/dashboard/products/search-products/",
+            type: "POST",
+            dataType: "json",
+            data: {
+              search_field: request.term
+            },
+            headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+            },
+            success: function(data) {
+              response($.map(data, function(item) {
+                return {
+                  label: item.name,
+                  value: item.id
+                }
+              }));
+            }
+          });
+        },
+        minLength: 1,
+        select: function(event, ui) {
+          // Aquí puedes agregar el código que se ejecutará cuando el usuario seleccione una sugerencia
+        }
+    }); */
 });

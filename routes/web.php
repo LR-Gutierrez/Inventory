@@ -27,7 +27,7 @@ Route::get('/', [AuthController::class, 'login_index'])->name('login.index');
 Route::post('/', [AuthController::class, 'login_store'])->name('login.store');
 Route::get('/reset_password', [AuthController::class, 'reset_index'])->name('reset.index');
 
-Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+Route::prefix('dashboard')->/* middleware(['auth'])-> */group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -47,6 +47,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/{id}', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/{id}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::post('/search-products', [ProductController::class, 'search'])->name('products.search');
     });
     Route::prefix('customers')->group(function() {
         Route::get('/', [CustomerController::class, 'index'])->name('customers.index');

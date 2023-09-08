@@ -202,4 +202,29 @@ class ProductController extends Controller
 
         return to_route('products.index')->with('success', 'The product has been successfully removed.');
     }
+    public function search(Request $request){
+        if ($request->search_field) {
+            $search_field = $request->search_field;
+
+            $productExists = is_numeric($search_field) === true ? $productExists = Product::where('id', $search_field)->exists() : $productExists = Product::where('name', $search_field)->exists();
+            if ($productExists === true) {
+                $product = is_numeric($search_field) === true ? $product = Product::where('id', $search_field)->with('itemCategory')->first() : $product = Product::where('name', $search_field)->with('itemCategory')->first();
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Product founded!',
+                    'data' => $product
+                ];
+                return response()->json($response, 200);
+            } else {
+                $response = [
+                    'status' => 'info',
+                    'message' => 'Product not founded!',
+                    'data' => []
+                ];
+                return response()->json($response, 404);
+            }
+        }else{
+            return null;
+        }
+    }
 }

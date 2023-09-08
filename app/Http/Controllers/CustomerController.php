@@ -71,15 +71,22 @@ class CustomerController extends Controller
     public function search(Request $request){
         if ($request->dni) {
             $dni = $request->dni;
-            $business_manager = Customer::where('dni', $dni)->first();
             if (Customer::where('dni', $dni)->exists() === true) {
+                $business_manager = Customer::where('dni', $dni)->first();
                 $response = [
                     'status' => 'success',
                     'message' => 'Client found!',
                     'data' => $business_manager
                 ];
                 return response()->json($response, 200);
-            }         
+            }else {
+                $response = [
+                    'status' => 'info',
+                    'message' => 'Client not founded!',
+                    'data' => []
+                ];
+                return response()->json($response, 404);
+            }
     
         }else{
             return null;

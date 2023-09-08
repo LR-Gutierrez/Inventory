@@ -27,7 +27,7 @@ class SaleController extends Controller
         return view('Sales.index', ['order' => $order, 'sales' => $sales, 'status' => $status]);
     }
     public function create(){
-        return view('Sales.create', ['sale' => null]);
+        return view('Sales.create');
     }
     public function edit($id){
         $sale = Sale::findOrFail($id);
