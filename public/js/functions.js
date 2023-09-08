@@ -239,12 +239,14 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 1000
                         }).then(function(){
+                            $('#client-name').text('Client name: ' + response.data.name).removeClass('hidden');
                             $('#name').val(response.data.name);                    
                             $('#lastname').val(response.data.lastname);                    
                             $('#email').val(response.data.email);                    
                             $('#phone').val(response.data.phone);                    
                         });
                     }else{
+                        $('#client-name').text('Client name: ').addClass('hidden');
                         $('#name').val('');                    
                         $('#lastname').val('');                    
                         $('#email').val('');                    
@@ -323,11 +325,6 @@ $(document).ready(function () {
                                 }
                             });      
                         });
-                    }else{
-                        $('#name').val('');                    
-                        $('#lastname').val('');                    
-                        $('#email').val('');                    
-                        $('#phone').val('');                    
                     }
                 }
             }, fail: function(error){

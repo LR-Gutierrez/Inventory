@@ -27,107 +27,89 @@
     </nav>
     
     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                    Register sale
-                </h1>
-                @if (session('error'))
-                    <div class="p-4 mb-4 text-sm text-red-800 dark:text-red-400 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 relative" role="alert">
-                        <span class="font-medium">Error!</span> {{ session('error') }}                   
+        <div class="px-6 mt-4 md:mt-6 sm:px-8 flex justify-between">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Register sale
+            </h1>
+            <h1 id="client-name" class="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white justify-end hidden">
+              Client name:
+            </h1>
+        </div>
+        <div class="px-6 pb-6 mb-4 md:mb-6 sm:px-8">
+            {{-- <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Register sale
+            </h1> --}}
+            @if (session('error'))
+                <div class="p-4 mb-4 text-sm text-red-800 dark:text-red-400 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 relative" role="alert">
+                    <span class="font-medium">Error!</span> {{ session('error') }}                   
+                </div>
+            @endif
+            <form class="space-y-4 md:space-y-6" method="post" action="{{ route('sales.store') }}">
+                @method('PUT')
+                @if ($errors->any())
+                    <div class="flex justify-center bg-red-500 text-white px-4 py-2 w-full rounded my-2" role="alert">
+                        <ul class="list-disc">
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    <span class="text-white">{{ $error }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
-                <form class="space-y-4 md:space-y-6" method="post" action="{{ route('sales.store') }}">
-                    @method('PUT')
-                    @if ($errors->any())
-                        <div class="flex justify-center bg-red-500 text-white px-4 py-2 w-full rounded my-2" role="alert">
-                            <ul class="list-disc">
-                                @foreach ($errors->all() as $error)
-                                    <li>
-                                        <span class="text-white">{{ $error }}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DNI number</label>
-                            <input type="text" name="dni" id="search-dni" placeholder="Enter the DNI number" class="liveIDnumber IDnumber bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 " maxlength="50" value="{{ old('name') }}">
-                        </div>
-                        <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="name" name="name" id="name" placeholder="Enter your customer name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed" maxlength="50" readonly>
-                        </div>
-                        <div>
-                            <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname</label>
-                            <input type="lastname" name="lastname" id="lastname" placeholder="Enter your customer lastname" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed" maxlength="50" readonly>
-                        </div>
-                        <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed" placeholder="name@ readonlyexample.com">
-                        </div>
-                        <div>
-                            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                            <input type="text" name="phone" id="phone" class="phone bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed" placeholder="e. readonlyg. +1 (701) 267-2223">
-                        </div>
-                        <div class="customer-info">
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="text" name="name" id="name" placeholder="Enter the sale name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="50" value="{{ old('description') }}">
-                        </div>
-                        <div class="customer-info">
-                            <label for="coupon_code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon code</label>
-                            <div class="flex">
-                                <input type="text" name="coupon_code" id="coupon_code" class="integerNumbers rounded-none rounded-l-md bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the discount amount" value="{{ old('coupon_code') }}" maxlength="3">
-                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-r-lg dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                                    {{-- {{ $sale->coupons->discount_amount }} --}}&nbsp;<i class="mt-1 fa-solid fa-percent w-4 h-4 text-gray-500 dark:text-gray-400"></i> Off
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-2 gap-6">
                     <div>
-                        <label for="search_product" class="sr-only">Search</label>
+                        <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DNI number</label>
+                        <input type="text" name="dni" id="search-dni" placeholder="Enter the DNI number" class="liveIDnumber IDnumber bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 " maxlength="50" value="{{ old('name') }}">
+                    </div>
+
+                    {{-- <label for="search_product" class="sr-only">Search</label> --}}
+                    <div>
+                        <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Search product</label>
                         <div class="relative mt-1">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="text" id="search_product" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for a product">
+                            <input type="text" id="search_product" class="block p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for a product">
                         </div>
+
                     </div>
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-4">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="p-4">
-                                        <div class="flex items-center">
-                                            <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Product name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Qty
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Category
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Price
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body"></tbody>
-                        </table>
-                    </div>
-                    <button type="submit"
-                        class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-floppy-disk"></i> Update</button>
-                </form>
-            </div>
+                </div>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-4">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Product name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Qty
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Category
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Price
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+                <button type="submit"
+                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-floppy-disk"></i> Register</button>
+            </form>
+        </div>
     </div>
 @endsection

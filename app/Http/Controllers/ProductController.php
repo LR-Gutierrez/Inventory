@@ -221,7 +221,7 @@ class ProductController extends Controller
                     'message' => 'Product not founded!',
                     'data' => []
                 ];
-                return response()->json($response, 404);
+                return response()->json($response, 200);
             }
         }else{
             return null;
