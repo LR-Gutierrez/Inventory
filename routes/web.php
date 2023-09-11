@@ -102,5 +102,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
         Route::patch('/desactivate/{id}', [SaleController::class, 'desactivate'])->name('sales.desactivate');
         Route::patch('/activate/{id}', [SaleController::class, 'activate'])->name('sales.activate');
+        Route::post('/remove-product/{id}', [SaleController::class, 'remove'])->name('sales.remove');
+        Route::post('/update-amount/{id}', [SaleController::class, 'update_amount'])->name('sales.update_amount');
     });
 });

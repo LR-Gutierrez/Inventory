@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\TempOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,11 +73,13 @@ class CustomerController extends Controller
         if ($request->dni) {
             $dni = $request->dni;
             if (Customer::where('dni', $dni)->exists() === true) {
-                $business_manager = Customer::where('dni', $dni)->first();
+                $customer = Customer::where('dni', $dni)->first();
+                $temp_orders = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
                 $response = [
                     'status' => 'success',
                     'message' => 'Client found!',
-                    'data' => $business_manager
+                    'data' => $customer,
+                    'orders' => $temp_orders,
                 ];
                 return response()->json($response, 200);
             }else {
@@ -85,7 +88,7 @@ class CustomerController extends Controller
                     'message' => 'Client not founded!',
                     'data' => []
                 ];
-                return response()->json($response, 404);
+                return response()->json($response);
             }
     
         }else{

@@ -17,6 +17,9 @@ class Product extends Model
     {
         return $this->belongsTo(ItemCategory::class);
     }
+    public function temp_orders(){
+        return $this->hasMany(TempOrder::class);
+    }
     /* public function businessManager()
     {
         return $this->belongsTo(BusinessManager::class, '');
