@@ -218,41 +218,54 @@ class ProductController extends Controller
                     'data' => $product
                 ];
                 
-                if (!empty($dni)) {
-                    $customer = Customer::where('dni', $dni)->exists();
-                    if ($customer === false) {
-                        $response = [
-                            'status' => 'error',
-                            'message' => 'Client not found!',
-                            'data' => [],
-                        ];
-                        return response()->json($response, 404);
-                    }else {
+                if (Customer::where('dni', $dni)->exists()) {
                         $customer = Customer::where('dni', $dni)->first();
-                        $count_temp_orders = TempOrder::where('customer_id', $customer->id)->where('product_id', $product->id)->count();         
+                        $count_temp_orders = TempOrder::where('customer_id', $customer->id)->where('product_id', $product->id)->with('products.itemCategory')->count();         
                         
                         if ($count_temp_orders >= 1) {
-                            $action = TempOrder::where('customer_id', $customer->id)->where('product_id', $product->id)->first();
-                            $count_temp_orders = $action->item_quantity + 1;
-                            $price = $count_temp_orders * $product->price;
+                            $temp_order = TempOrder::where('customer_id', $customer->id)->where('product_id', $product->id)->with('products.itemCategory')->first();
+                            $count_temp_orders = $temp_order->item_quantity + 1;
+                            $temp_order->customer_id = $customer->id;
+                            $temp_order->product_id = $product->id;
+                            $temp_order->item_quantity = $count_temp_orders;
+                            $temp_order->price = $count_temp_orders * $product->price;
+                            $temp_order->created_by = Auth::user()->id;
+                            $temp_order->save();
+                            $temp_order = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
+                            $response = [
+                                'status' => 'success',
+                                'message' => 'Product founded!',
+                                'data' => $customer,
+                                'orders' => $temp_order,
+                            ];
+                            return response()->json($response, 200);
                         }else {
-                            $action = new TempOrder();
+                            $temp_order = new TempOrder();
                             $count_temp_orders = 1;
-                            $price = $product->price;
+                            $temp_order->customer_id = $customer->id;
+                            $temp_order->product_id = $product->id;
+                            $temp_order->item_quantity = $count_temp_orders;
+                            $temp_order->price = $count_temp_orders * $product->price;
+                            $temp_order->created_by = Auth::user()->id;
+                            $temp_order->save();
+
+                            $temp_order = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
+                            $response = [
+                                'status' => 'success',
+                                'message' => 'Product founded!',
+                                'data' => $customer,
+                                'orders' => $temp_order,
+                            ];
+                            return response()->json($response, 200);
                         }
-
-                        $temp_order = $action;
-                        $temp_order->customer_id = $customer->id;
-                        $temp_order->product_id = $product->id;
-                        $temp_order->item_quantity = $count_temp_orders;
-                        $temp_order->price = $price;
-                        $temp_order->created_by = Auth::user()->id;
-                        $temp_order->save();
-                    }
-
+                }else{
+                    $response = [
+                        'status' => 'info',
+                        'message' => 'Client not founded!',
+                        'data' => []
+                    ];
+                    return response()->json($response);
                 }
-
-                return response()->json($response, 200);
             } else {
                 $response = [
                     'status' => 'info',
