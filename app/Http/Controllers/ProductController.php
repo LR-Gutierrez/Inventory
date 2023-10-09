@@ -214,7 +214,7 @@ class ProductController extends Controller
                 $product = is_numeric($search_field) === true ? $product = Product::where('id', $search_field)->with('itemCategory')->first() : $product = Product::where('name', $search_field)->with('itemCategory')->first();
                 $response = [
                     'status' => 'success',
-                    'message' => 'Product founded!',
+                    'message' => __('Product founded!'),
                     'data' => $product
                 ];
                 
@@ -234,7 +234,7 @@ class ProductController extends Controller
                             $temp_order = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
                             $response = [
                                 'status' => 'success',
-                                'message' => 'Product founded!',
+                                'message' => __('Product founded!'),
                                 'data' => $customer,
                                 'orders' => $temp_order,
                             ];
@@ -252,7 +252,7 @@ class ProductController extends Controller
                             $temp_order = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
                             $response = [
                                 'status' => 'success',
-                                'message' => 'Product founded!',
+                                'message' => __('Product founded!'),
                                 'data' => $customer,
                                 'orders' => $temp_order,
                             ];
@@ -261,7 +261,7 @@ class ProductController extends Controller
                 }else{
                     $response = [
                         'status' => 'info',
-                        'message' => 'Client not founded!',
+                        'message' => __('Client not founded!'),
                         'data' => []
                     ];
                     return response()->json($response);
@@ -269,7 +269,7 @@ class ProductController extends Controller
             } else {
                 $response = [
                     'status' => 'info',
-                    'message' => 'Product not founded!',
+                    'message' => __('Product not found!'),
                     'data' => []
                 ];
                 return response()->json($response, 200);

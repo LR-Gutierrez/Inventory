@@ -36,16 +36,12 @@
             </h1>
         </div>
         <div class="px-6 pb-6 mb-4 md:mb-6 sm:px-8">
-            {{-- <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Register sale
-            </h1> --}}
             @if (session('error'))
-                <div class="p-4 mb-4 text-sm text-red-800 dark:text-red-400 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 relative" role="alert">
+                <div class="mb-4 text-sm text-red-800 dark:text-red-400 rounded-lg bg-gray-50 border border-gray-300 sm:text-sm focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 relative" role="alert">
                     <span class="font-medium">Error!</span> {{ session('error') }}                   
                 </div>
             @endif
             <form class="space-y-4 md:space-y-6" method="post" action="{{ route('sales.store') }}">
-                @method('PUT')
                 @if ($errors->any())
                     <div class="flex justify-center bg-red-500 text-white px-4 py-2 w-full rounded my-2" role="alert">
                         <ul class="list-disc">
@@ -62,7 +58,6 @@
                         <label for="search-dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DNI number *</label>
                         <input type="text" name="dni" id="search-dni" placeholder="Enter the DNI number" class="liveIDnumber IDnumber bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="50">
                     </div>
-
                     {{-- <label for="search_product" class="sr-only">Search</label> --}}
                     <div>
                         <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Search product</label>
@@ -83,8 +78,14 @@
                             <tr>
                                 <th scope="col" class="p-4">
                                     <div class="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                        <form action="{{ route('sales.removeAll') }}" method="post" id="removeAll" id="removeAll" name="removeAll"></form>
+                                        <input type="hidden" name="selected" id="selected" value="">
+                                            <input id="checkbox-all-search" name="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                        </form>
+                                        <div id="trashIcon" class="ml-2 cursor-pointer">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </div>
                                     </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -104,32 +105,17 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="table-body">
-                            {{-- <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" data-id="5">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" id="checkbox-table-search-1">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
-                                <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">Café</th>
-                                <td class="px-6 py-4">
-                                    <input type="number" id="item_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number" value="1">
-                                </td>
-                                <td class="px-6 py-4">Dolor maiores nisi aliquam.</td>
-                                <td class="px-6 py-4">$128.66</td>
-                                <td class="px-6 py-4">
-                                    <a href="#" data-id="5" title="Remove product" class="font-medium text-red-600 dark:text-red-500 hover:underline removeFromCart">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </a>
-                                </td>
-                            </tr> --}}    
-                        </tbody>
+                        <tbody id="table-body"></tbody>
                     </table>
                 </div>
                 <button type="submit"
-                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-floppy-disk"></i> Register</button>
+                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-cash-register"></i> Make a Sell</button>
             </form>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $("#checkbox-all-search").prop("checked", false);
+        });
+    </script>
 @endsection
