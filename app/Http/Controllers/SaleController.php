@@ -157,9 +157,18 @@ class SaleController extends Controller
             'dni' => 'required|string',
         ]);
         $dni = str_replace(' ', '', $request->dni);
+        $coupon_code = $request->coupon_code != null ? $request->coupon_code : null;
         $customer = Customer::where('dni', $dni)->first();
         
-        DB::statement('CALL execute_sale(?, ?, ?, ?)', array($customer->id, null, Carbon::now(), Auth::user()->id));
+        $products = TempOrder::with('customers', 'products.itemCategory')
+            ->whereHas('customers', function($query) use ($dni){
+                $query->where('dni', $dni);
+            })
+        ->count();
+        if ($products == 0 ) {
+            return redirect()->back()->with('error', "This customer doesn't have any products on its cart.");
+        } 
+        DB::statement('CALL execute_sale(?, ?, ?, ?)', array($customer->id, $coupon_code, Carbon::now(), Auth::user()->id));
 
         $products = TempOrder::with('customers', 'products.itemCategory')
             ->whereHas('customers', function($query) use ($dni){

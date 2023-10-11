@@ -5,7 +5,7 @@ $(document).ready(function () {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 8000
+        timer: 5000
     });
     $('#business_manager-dropdown, #info_supplier-dropdown, #info_supplier-dropdown, .customer-info').hide();
     $('#search-dni').focus();
@@ -415,13 +415,9 @@ $(document).ready(function () {
                 if (response.status === 'success') {
                     $('#products-table').find('tr[data-id="' + $('.removeFromCart').data('id') + '"]').remove();
                 }
-                Swal.fire({
-                    position: 'top-end',
+                Toast.fire({
                     icon: response.status,
-                    title: response.title,
-                    text: response.message,
-                    showConfirmButton: false,
-                    timer: 1500
+                    title: response.message
                 }).then(function(){
                     $('#search_product').focus();
                 });
@@ -523,6 +519,35 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+    $("#makeSell").on("click", function(){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will make a sale with the added items.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sell!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // url: "{{ route('sales.store' )}}",
+                $.post({
+                    url: "/dashboard/sales/create/",
+                    data: $("#form_make_sell").serialize(),
+                    headers: {
+                      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                    },
+                    success: function(response) {
+                        Swal.fire(
+                            'Sold!',
+                            'The items were sold successfly.',
+                            'success'
+                        );
+                    }
+                });
+            }
+        })
     });
     /* $("#search_product").autocomplete({
         source: function(request, response) {

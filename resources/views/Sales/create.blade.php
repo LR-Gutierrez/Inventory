@@ -41,7 +41,7 @@
                     <span class="font-medium">Error!</span> {{ session('error') }}                   
                 </div>
             @endif
-            <form class="space-y-4 md:space-y-6" method="post" action="{{ route('sales.store') }}">
+            <form class="space-y-4 md:space-y-6" id="form_make_sell" method="post" action="{{ route('sales.store') }}">
                 @if ($errors->any())
                     <div class="flex justify-center bg-red-500 text-white px-4 py-2 w-full rounded my-2" role="alert">
                         <ul class="list-disc">
@@ -108,8 +108,18 @@
                         <tbody id="table-body"></tbody>
                     </table>
                 </div>
-                <button type="submit"
-                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-cash-register"></i> Make a Sell</button>
+                <div class="grid grid-cols-2">
+                    <div>
+                        <label for="coupon_code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Have a acoupon code?</label>
+                        <div class="flex">
+                            <input type="text" name="coupon_code" id="coupon_code" class="rounded-none rounded-l-md bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the coupon code">
+                            <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-r-lg dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                <i class="fa-solid fa-percent w-4 h-4 text-gray-500 dark:text-gray-400"></i> Off
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="makeSell" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><i class="fa-solid fa-cash-register"></i> Make a Sell</button>
             </form>
         </div>
     </div>
