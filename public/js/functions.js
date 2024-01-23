@@ -248,31 +248,36 @@ $(document).ready(function () {
                             timer: 1000
                         });
                         $('#client-info').text('Client name: ' + response.data.name).removeClass('hidden').attr('data-id', response.data.id);
+                        
                         for (var i = 0; i < response.orders.length; i++) {
-                            var row = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600').attr('data-id', response.orders[i].products.id);
-                            var checkbox = $('<input>').attr({
-                                type: 'checkbox',
-                                class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600',
-                                id: 'checkbox-table-search-' + response.orders[i].id
-                            });
-                            var label = $('<label>').attr('for', 'checkbox-table-search-' + response.orders[i].id).addClass('sr-only').text('checkbox');
-                            var cell = $('<td>').addClass('w-4 p-4').append($('<div>').addClass('flex items-center').append(checkbox).append(label));
-                            var name = $('<th>').addClass('px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white').attr('scope', 'row').text(response.orders[i].products.name);
-                            var quantity = $('<td>').addClass('px-6 py-4').append($('<input>').attr({
-                                type: 'number',
-                                id: 'item_quantity',
-                                class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number',
-                                value: response.orders[i].item_quantity
-                            }));
-                            var category = $('<td>').addClass('px-6 py-4').text(response.orders[i].products.item_category.description);
-                            var price = $('<td>').addClass('px-6 py-4').text('$' + response.orders[i].products.price);
-                            var remove = $('<td>').addClass('px-6 py-4').append($('<a>').attr({
-                                href: '#',
-                                'data-id': response.orders[i].products.id,
-                                title: 'Remove product'
-                            }).addClass('font-medium text-red-600 dark:text-red-500 hover:underline removeFromCart').append($('<i>').addClass('fa-solid fa-trash-can')));
-                            row.append(cell).append(name).append(quantity).append(category).append(price).append(remove);
-                            $('#table-body').append(row);
+                            if ($('#table-body').find('tr[data-id="' + response.orders[i].product_id + '"]').length > 0) {
+                                return;
+                            }else{
+                                var row = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600').attr('data-id', response.orders[i].products.id);
+                                var checkbox = $('<input>').attr({
+                                    type: 'checkbox',
+                                    class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600',
+                                    id: 'checkbox-table-search-' + response.orders[i].id
+                                });
+                                var label = $('<label>').attr('for', 'checkbox-table-search-' + response.orders[i].id).addClass('sr-only').text('checkbox');
+                                var cell = $('<td>').addClass('w-4 p-4').append($('<div>').addClass('flex items-center').append(checkbox).append(label));
+                                var name = $('<th>').addClass('px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white').attr('scope', 'row').text(response.orders[i].products.name);
+                                var quantity = $('<td>').addClass('px-6 py-4').append($('<input>').attr({
+                                    type: 'number',
+                                    id: 'item_quantity',
+                                    class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number',
+                                    value: response.orders[i].item_quantity
+                                }));
+                                var category = $('<td>').addClass('px-6 py-4').text(response.orders[i].products.item_category.description);
+                                var price = $('<td>').addClass('px-6 py-4').text('$' + response.orders[i].products.price);
+                                var remove = $('<td>').addClass('px-6 py-4').append($('<a>').attr({
+                                    href: '#',
+                                    'data-id': response.orders[i].products.id,
+                                    title: 'Remove product'
+                                }).addClass('font-medium text-red-600 dark:text-red-500 hover:underline removeFromCart').append($('<i>').addClass('fa-solid fa-trash-can')));
+                                row.append(cell).append(name).append(quantity).append(category).append(price).append(remove);
+                                $('#table-body').append(row);
+                            }
                         }
                         
                         $('.input-number').on('keydown', function(e) {
