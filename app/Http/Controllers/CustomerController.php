@@ -77,7 +77,7 @@ class CustomerController extends Controller
                 $temp_orders = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
                 $response = [
                     'status' => 'success',
-                    'message' => 'Client found!',
+                    'message' => 'Customer found!',
                     'data' => $customer,
                     'orders' => $temp_orders,
                 ];
@@ -85,7 +85,7 @@ class CustomerController extends Controller
             }else {
                 $response = [
                     'status' => 'info',
-                    'message' => 'Client not founded!',
+                    'message' => 'Customer not found, please register it',
                     'data' => []
                 ];
                 return response()->json($response);

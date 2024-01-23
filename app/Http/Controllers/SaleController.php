@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\TempOrder;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -20,12 +24,11 @@ class SaleController extends Controller
             if (request()->has('status')) {
                 $status = request('status') == 'active' ? true : false;
                 $name = request('status') == 'active' ? 'active' : 'inactive';
-                $sales = Sale::with('customers', 'coupons')->where('status', $status)->orderBy('id', 'asc')->paginate(5)->appends(['status' => $name]);
+                $sales = Sale::with('customers', 'coupons')->where('status', $status)->orderBy('id', 'desc')->paginate(5)->appends(['status' => $name]);
             }else {
-                $sales = Sale::with('customers', 'coupons')->orderBy('id', 'asc')->paginate(5);
+                $sales = Sale::with('customers', 'coupons')->orderBy('id', 'desc')->paginate(5);
             }
         }
-        // dd($sales);
         return view('Sales.index', ['order' => $order, 'sales' => $sales, 'status' => $status]);
     }
     public function create(){
@@ -74,6 +77,52 @@ class SaleController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function removeAll(Request $request){
+        $request->validate([
+            'body_checkbox' => 'required|array',
+            'dni' => 'required|integer',
+        ]);
+        $dni = $request->dni;
+        $products = TempOrder::with('customers')
+            ->whereHas('customers', function($query) use ($dni){
+                $query->where('dni', $dni);
+            })
+        ->exists();
+        if ($products === false) {
+            $response = [
+                'status' => 'error',
+                'message' => __("This customer doesn't have any products in the cart."),
+                'data' => [],
+            ];
+            return response()->json($response, 200 );
+        }else{
+            foreach ($request->body_checkbox as $checkbox) {
+                $product_id = $checkbox['value'];
+                $products = TempOrder::with('customers')
+                    ->whereHas('customers', function($query) use ($dni){
+                            $query->where('dni', $dni);
+                        })
+                    ->where('product_id', $product_id)
+                ->get();
+                $products->each(function ($product) {
+                    $product->delete();
+                });
+            }
+            $products = TempOrder::with('customers', 'products.itemCategory')
+                ->whereHas('customers', function($query) use ($dni){
+                    $query->where('dni', $dni);
+                })
+            ->get();
+        }       
+
+        $response = [
+            'status' => 'success',
+            'title' => __('Products removed!'),
+            'message' => __('The products has been successfuly removed from the cart.'),
+            'orders' => $products,
+        ];
+        return response()->json($response, 200);
+    }
     public function update_amount(Request $request){
         $request->validate([
             'product_id' => 'required|integer',
@@ -102,5 +151,33 @@ class SaleController extends Controller
             'data' => $temp_order,
         ];
         return response()->json($response, 200);
+    }
+    public function store(Request $request){
+        $request->validate([
+            'dni' => 'required|string',
+        ]);
+        $dni = str_replace(' ', '', $request->dni);
+        $coupon_code = $request->coupon_code != null ? $request->coupon_code : null;
+        $customer = Customer::where('dni', $dni)->first();
+        
+        $products = TempOrder::with('customers', 'products.itemCategory')
+            ->whereHas('customers', function($query) use ($dni){
+                $query->where('dni', $dni);
+            })
+        ->count();
+        if ($products == 0 ) {
+            return redirect()->back()->with('error', "This customer doesn't have any products on its cart.");
+        } 
+        DB::statement('CALL execute_sale(?, ?, ?, ?)', array($customer->id, $coupon_code, Carbon::now(), Auth::user()->id));
+
+        $products = TempOrder::with('customers', 'products.itemCategory')
+            ->whereHas('customers', function($query) use ($dni){
+                $query->where('dni', $dni);
+            })
+        ->count();
+        if ($products > 0) {
+            return redirect()->back()->with('error', 'An error may have ocurred.');
+        }
+        return to_route('sales.index')->with('success', 'The products has been successfuly sold.');
     }
 }

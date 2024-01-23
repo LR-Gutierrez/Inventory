@@ -41,7 +41,7 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     });
     Route::prefix('products')->group(function() {
         Route::get('/', [ProductController::class, 'index'])->name('products.index');
-        Route::post('/search-business_manager', [ProductController::class, 'search'])->name('products.search');
+        Route::post('/search-business_manager', [ProductController::class, 'search'])->name('products.search_business_manager');
         Route::get('/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/create', [ProductController::class, 'store'])->name('products.store');
         Route::get('/{id}', [ProductController::class, 'edit'])->name('products.edit');
@@ -97,12 +97,13 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::get('/', [SaleController::class, 'index'])->name('sales.index');
         Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
         Route::post('/create', [SaleController::class, 'store'])->name('sales.store');
-        Route::get('/{id}', [SaleController::class, 'edit'])->name('sales.edit');
-        Route::put('/{id}', [SaleController::class, 'update'])->name('sales.update');
-        Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
         Route::patch('/desactivate/{id}', [SaleController::class, 'desactivate'])->name('sales.desactivate');
         Route::patch('/activate/{id}', [SaleController::class, 'activate'])->name('sales.activate');
         Route::post('/remove-product/{id}', [SaleController::class, 'remove'])->name('sales.remove');
+        Route::post('/remove-all', [SaleController::class, 'removeAll'])->name('sales.removeAll');
         Route::post('/update-amount/{id}', [SaleController::class, 'update_amount'])->name('sales.update_amount');
+        Route::get('/{id}', [SaleController::class, 'edit'])->name('sales.edit');
+        Route::put('/{id}', [SaleController::class, 'update'])->name('sales.update');
+        Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
     });
 });
