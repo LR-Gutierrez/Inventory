@@ -34,7 +34,8 @@
         <li>
           <a
             href="{{ route('dashboard.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group"
+            
+            class="{{ str_contains(Route::currentRouteName(), 'dashboard') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
           <i class="fa-solid fa-house flex items-center justify-center w-6 h-6 text-gray-500 transition duration-7 dark:text-white"></i>
             <span class="ml-3">Home</span>
@@ -44,7 +45,7 @@
         <li>
           <a
             href="{{ route('sales.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'sales') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <i class="fa-brands fa-shopify flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Sales</span>
@@ -54,7 +55,7 @@
         <li>
           <a
             href="{{ route('coupons.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'coupons') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <i class="fa-solid fa-gift flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Coupon codes</span>
@@ -63,8 +64,8 @@
 
         <li>
           <a
-            href="{{ route('sales.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            href="{{ route('users.index') }}"
+            class="{{ str_contains(Route::currentRouteName(), 'users') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
           <i class="fa-solid fa-users flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Users</span>
@@ -74,7 +75,7 @@
         <li>
           <a
             href="{{ route('products.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'products') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <i class="fa-solid fa-mug-saucer flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Products</span>
@@ -84,26 +85,16 @@
         <li>
           <a
             href="{{ route('item-categories.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'item-categories') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           ><i class="fa-solid fa-list flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Item Categories</span>
-          </a>
-        </li>
-        
-        <li>
-          <a
-            href="{{ route('coupons.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-          >
-            <i class="fa-solid fa-gift flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-            <span class="ml-3">Coupon codes</span>
           </a>
         </li>
 
         <li>
           <a
             href="{{ route('customers.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'customers') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <i class="fa-solid fa-people-roof flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Customers</span>
@@ -113,7 +104,7 @@
         <li>
           <a
             href="{{ route('business-managers.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'business-managers') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <i class="fa-solid fa-users-gear flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Business managers</span>
@@ -123,7 +114,7 @@
         <li>
           <a
             href="{{ route('suppliers.index') }}"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ str_contains(Route::currentRouteName(), 'suppliers') ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <i class="fa-solid fa-truck-field flex items-center justify-center w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
             <span class="ml-3">Suppliers</span>
@@ -133,7 +124,7 @@
         {{--<li>
           <a
             href="#"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            class="{{ Route::currentRouteName() == 'dashboard.index' ? 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-700 group' : 'flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group' }}"
           >
             <svg
               aria-hidden="true"
