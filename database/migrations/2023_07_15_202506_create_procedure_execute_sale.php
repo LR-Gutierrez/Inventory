@@ -30,7 +30,7 @@ return new class extends Migration
                     SELECT SUM(item_quantity * price) INTO total FROM temp_orders WHERE customer_id = in_customer_id;
 
                     IF in_coupon_code IS NOT NULL THEN
-                        SELECT id, discount_amount INTO coupon_id, discount FROM coupons WHERE coupon_code = in_coupon_code;
+                        SELECT id, discount_amount INTO coupon_id, discount FROM coupons WHERE coupon_code = 'in_coupon_code';
                         IF coupon_id IS NOT NULL THEN
                             total := total - ((total * discount) / 100);
                             UPDATE coupons SET claimable = claimable - 1 WHERE id = coupon_id;
