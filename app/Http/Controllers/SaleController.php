@@ -141,7 +141,7 @@ class SaleController extends Controller
         $product = Product::find($request->product_id);
         $temp_order = TempOrder::where('customer_id', $request->customer_id)->where('product_id',$request->product_id)->first();
         $temp_order->item_quantity = $request->item_quantity;
-        $temp_order->price = $product->price * $request->item_quantity;
+        // $temp_order->price = $product->price * $request->item_quantity;
         $temp_order->save();
         
         $response = [

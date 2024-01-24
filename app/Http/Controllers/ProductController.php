@@ -228,7 +228,8 @@ class ProductController extends Controller
                             $temp_order->customer_id = $customer->id;
                             $temp_order->product_id = $product->id;
                             $temp_order->item_quantity = $count_temp_orders;
-                            $temp_order->price = $count_temp_orders * $product->price;
+                            $temp_order->price = $product->price;
+                            // $temp_order->price = $count_temp_orders * $product->price;
                             $temp_order->created_by = Auth::user()->id;
                             $temp_order->save();
                             $temp_order = TempOrder::where('customer_id', $customer->id)->with('products.itemCategory')->get();
