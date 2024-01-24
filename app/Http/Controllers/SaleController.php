@@ -166,7 +166,13 @@ class SaleController extends Controller
             })
         ->count();
         if ($products == 0 ) {
-            return redirect()->back()->with('error', "This customer doesn't have any products on its cart.");
+            $response = [
+                'status' => 'error',
+                'title' => "Oops!",
+                'message' => "This customer doesn't have any products on its cart.",
+                'data' => []
+            ];
+            return response()->json($response);
         } 
         DB::statement('CALL execute_sale(?, ?, ?, ?)', array($customer->id, $coupon_code, Carbon::now(), Auth::user()->id));
 
@@ -176,8 +182,22 @@ class SaleController extends Controller
             })
         ->count();
         if ($products > 0) {
-            return redirect()->back()->with('error', 'An error may have ocurred.');
+            $response = [
+                'status' => 'error',
+                'title' => "Oops!",
+                'message' => "An error may have ocurred.",
+                'data' => []
+            ];
+            return response()->json($response);
         }
-        return to_route('sales.index')->with('success', 'The products has been successfuly sold.');
+        $response = [
+            'status' => 'success',
+            'title' => 'Sold!',
+            'message' => "The products has been successfuly sold.",
+            'data' => [
+                'url' => ''. route('sales.index').''
+            ]
+        ];
+        return response()->json($response);
     }
 }

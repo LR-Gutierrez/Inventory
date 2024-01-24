@@ -124,8 +124,342 @@
         </div>
     </div>
     <script>
+        var timeout = null;
+        var checkbox = [];
         $(document).ready(function () {
             $("#checkbox-all-search").prop("checked", false);
+            $('#search-dni').on("keyup", function(){
+                let dni = $(this).val().replace(/\s+/g, '');
+                clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                    $.post({
+                        url: '{{ route("customers.search") }}',
+                        type: 'POST',
+                        data: {dni: dni},
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                $('#search_product').focus();
+                                Toast.fire({
+                                    icon: response.status,
+                                    title: response.message
+                                });
+                                $("#products-table tr:not(:first)").remove();
+                                $("#checkbox-all-search").prop("checked", false);
+                                $('#client-info').text('Client name: ' + response.data.name).removeClass('hidden').attr('data-id', response.data.id);
+                                
+                                for (var i = 0; i < response.orders.length; i++) {
+                                    if ($('#table-body').find('tr[data-id="' + response.orders[i].product_id + '"]').length > 0) {
+                                        return;
+                                    }else{
+                                        var row = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600').attr('data-id', response.orders[i].products.id);
+                                        var checkbox = $('<input>').attr({
+                                            name: 'body_checkbox[]',
+                                        type: 'checkbox',
+                                            class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 body-checkbox',
+                                            id: 'checkbox-table-search-' + response.orders[i].id,
+                                        value: response.orders[i].products.id
+                                        });
+                                        var label = $('<label>').attr('for', 'checkbox-table-search-' + response.orders[i].id).addClass('sr-only').text('checkbox');
+                                        var cell = $('<td>').addClass('w-4 p-4').append($('<div>').addClass('flex items-center').append(checkbox).append(label));
+                                        var name = $('<th>').addClass('px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white').attr('scope', 'row').text(response.orders[i].products.name);
+                                        var quantity = $('<td>').addClass('px-6 py-4').append($('<input>').attr({
+                                            type: 'number',
+                                            id: 'item_quantity',
+                                            name: 'item_quantity',
+                                        class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number',
+                                            value: response.orders[i].item_quantity
+                                        }));
+                                        var category = $('<td>').addClass('px-6 py-4').text(response.orders[i].products.item_category.description);
+                                        var price = $('<td>').addClass('px-6 py-4').text('$' + response.orders[i].products.price);
+                                        var remove = $('<td>').addClass('px-6 py-4').append($('<a>').attr({
+                                            href: '#',
+                                            'data-id': response.orders[i].products.id,
+                                            title: 'Remove product'
+                                        }).addClass('font-medium text-red-600 dark:text-red-500 hover:underline removeFromCart').append($('<i>').addClass('fa-solid fa-trash-can')));
+                                        row.append(cell).append(name).append(quantity).append(category).append(price).append(remove);
+                                        $('#table-body').append(row);
+                                    }
+                                }
+                                
+                                $('.input-number').on('keydown', function(e) {
+                                    if (e.keyCode == 40 && $(this).val() < 1 || e.keyCode == 13) {
+                                        e.preventDefault();
+                                        this.val(1);
+                                    }
+                                });
+                                $('.input-number').on('input', function() {
+                                    if ($(this).val() < 1) {
+                                    $(this).val(1);
+                                    }
+                                    if ($(this).val() > 999) {
+                                    $(this).val(999);
+                                    }
+                                });
+                            }else{
+                                Toast.fire({
+                                    icon: response.status,
+                                    title: response.message
+                                });
+                                $('#client-info').text('Client name: ').addClass('hidden');
+                                $('#products-table tr').not(':first').remove();
+                            }
+                        }, fail: function(error){
+                        }
+                    });
+                }, 400);
+            });
+            $('#search_product').on("keyup", function(){
+                clearTimeout(timeout);
+                let search_field = $(this);
+                timeout = setTimeout(function() {
+                    if ($('#search-dni').val() == '') {
+                        $("#search-dni").focus();
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Whoops',
+                            text: "First enter the customer's ID number"
+                        });
+                    } else {
+                            $.post({
+                                url: '{{ route("products.search") }}',
+                                type: 'POST',
+                                data: {search_field: search_field.val(), dni: $('#search-dni').val()},
+                                dataType: 'json',
+                                headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    if (response.status === 'success') {
+                                        $("#products-table tr:not(:first)").remove();
+                                        $("#checkbox-all-search").prop("checked", false);
+                                        Toast.fire({
+                                            icon: response.status,
+                                            title: response.message
+                                        });
+                                        for (var i = 0; i < response.orders.length; i++) {
+                                            var row = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600').attr('data-id', response.orders[i].products.id);
+                                            var checkbox = $('<input>').attr({
+                                                name: 'body_checkbox[]',
+                                                type: 'checkbox',
+                                                class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 body-checkbox',
+                                                id: 'checkbox-table-search-' + response.orders[i].id,
+                                                value: response.orders[i].products.id
+                                            });
+                                            var label = $('<label>').attr('for', 'checkbox-table-search-' + response.orders[i].id).addClass('sr-only').text('checkbox');
+                                            var cell = $('<td>').addClass('w-4 p-4').append($('<div>').addClass('flex items-center').append(checkbox).append(label));
+                                            var name = $('<th>').addClass('px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white').attr('scope', 'row').text(response.orders[i].products.name);
+                                            var quantity = $('<td>').addClass('px-6 py-4').append($('<input>').attr({
+                                                type: 'number',
+                                                id: 'item_quantity',
+                                                name: 'item_quantity',
+                                                class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number',
+                                                value: response.orders[i].item_quantity
+                                            }));
+                                            var category = $('<td>').addClass('px-6 py-4').text(response.orders[i].products.item_category.description);
+                                            var price = $('<td>').addClass('px-6 py-4').text('$' + response.orders[i].products.price);
+                                            var remove = $('<td>').addClass('px-6 py-4').append($('<a>').attr({
+                                                href: '#',
+                                                'data-id': response.orders[i].products.id,
+                                                title: 'Remove product'
+                                            }).addClass('font-medium text-red-600 dark:text-red-500 hover:underline removeFromCart').append($('<i>').addClass('fa-solid fa-trash-can')));
+                                            row.append(cell).append(name).append(quantity).append(category).append(price).append(remove);
+                                            $('#table-body').append(row);
+                                        }  
+                                        $("#table-body").append(row);
+                                        $(".input-number").on(
+                                            "keydown",
+                                            function (e) {
+                                                if (
+                                                    (e.keyCode == 40 &&
+                                                        $(this).val() < 1) ||
+                                                    e.keyCode == 13
+                                                ) {
+                                                    e.preventDefault();
+                                                    this.val(1);
+                                                }
+                                            }
+                                        );
+                                        $(".input-number").on("input", function () {
+                                            if ($(this).val() < 1) {
+                                                $(this).val(1);
+                                            }
+                                            if ($(this).val() > 999) {
+                                                $(this).val(999);
+                                            }
+                                        });
+                                    }else{
+                                        Toast.fire({
+                                            icon: response.status,
+                                            title: response.message
+                                        })
+                                    }
+                                }, fail: function(error){
+                            
+                                }
+                            });
+                    }
+                }, 400);    
+            });
+            $(document).on("click", ".removeFromCart", function(){
+                $.post({
+                    url: '{{ route("sales.remove") }}',
+                    type: 'POST',
+                    data: {product_id: $(this).data('id'), customer_id: $('#client-info').data('id')},
+                    dataType: 'json',
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#products-table').find('tr[data-id="' + $('.removeFromCart').data('id') + '"]').remove();
+                        }
+                        Toast.fire({
+                            icon: response.status,
+                            title: response.message
+                        }).then(function(){
+                            $('#search_product').focus();
+                        });
+                    }, fail: function(error){
+                
+                    }
+                });
+            });
+            $(document).on('click', '#item_quantity', function() {
+                this.select();
+            });
+            $(document).on('change', '#item_quantity', function(){
+                $.post({
+                    url: '{{ route("sales.update_amount" ) }}',
+                    type: 'POST',
+                    data: {product_id: $(this).closest('tr').data('id'), customer_id: $('#client-info').data('id'), item_quantity: $(this).val()},
+                    dataType: 'json',
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Toast.fire({
+                            icon: response.status,
+                            title: response.message
+                        });
+                    }, fail: function(error){
+                
+                    }
+                });
+            });
+            $('#checkbox-all-search').change(function() {
+                if ($(this).is(':checked')) {
+                    $('.body-checkbox').prop('checked', true);
+                    checkbox.push($('.body-checkbox').val());
+                    if($("input[name='body_checkbox[]']").length > 0){
+                        $("#trashIcon i").addClass("text-red-600 !important");
+                    }
+                } else {
+                    $("#trashIcon i").removeClass("text-red-600 !important");
+                    $('.body-checkbox').prop('checked', false);
+                }
+            });
+            $(document).on('change','input[name="body_checkbox[]"]', function() {
+                let parent = $(this).closest('tr');
+                let td_id = parent.data('id');
+                $("#selected").val(td_id);
+            });
+            $("#trashIcon").on("click", function(){
+                let dni = $("#search-dni").val().replace(/\s+/g, '');
+                checkbox = $('input[name="body_checkbox[]"]:checked').serializeArray().filter(function(item) {
+                    return item.value !== 'on';
+                });
+                if($("input[name='body_checkbox[]']").length > 0){
+                    $.post({
+                        url: " {{ route('sales.removeAll') }}",
+                        data: {
+                            body_checkbox: checkbox, dni:dni,
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Toast.fire({
+                                icon: response.status,
+                                title: response.message
+                            });
+                            $("#products-table tr:not(:first)").remove();
+                            for (var i = 0; i < response.orders.length; i++) {
+                                var row = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600').attr('data-id', response.orders[i].products.id);
+                                var checkbox = $('<input>').attr({
+                                    name: 'body_checkbox[]',
+                                    type: 'checkbox',
+                                    class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 body-checkbox',
+                                    id: 'checkbox-table-search-' + response.orders[i].id,
+                                    value: response.orders[i].products.id
+                                });
+                                var label = $('<label>').attr('for', 'checkbox-table-search-' + response.orders[i].id).addClass('sr-only').text('checkbox');
+                                var cell = $('<td>').addClass('w-4 p-4').append($('<div>').addClass('flex items-center').append(checkbox).append(label));
+                                var name = $('<th>').addClass('px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white').attr('scope', 'row').text(response.orders[i].products.name);
+                                var quantity = $('<td>').addClass('px-6 py-4').append($('<input>').attr({
+                                    type: 'number',
+                                    id: 'item_quantity',
+                                    name: 'item_quantity',
+                                    class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-number',
+                                    value: response.orders[i].item_quantity
+                                }));
+                                var category = $('<td>').addClass('px-6 py-4').text(response.orders[i].products.item_category.description);
+                                var price = $('<td>').addClass('px-6 py-4').text('$' + response.orders[i].products.price);
+                                var remove = $('<td>').addClass('px-6 py-4').append($('<a>').attr({
+                                    href: '#',
+                                    'data-id': response.orders[i].products.id,
+                                    title: 'Remove product'
+                                }).addClass('font-medium text-red-600 dark:text-red-500 hover:underline removeFromCart').append($('<i>').addClass('fa-solid fa-trash-can')));
+                                row.append(cell).append(name).append(quantity).append(category).append(price).append(remove);
+                                $('#table-body').append(row);
+                            }
+                        }, fail: function(error){
+                        }
+                    });
+                }
+            });
+            $("#makeSell").on("click", function(){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You will make a sale with the added items.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sell!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post({
+                            url: "{{ route('sales.store' )}}",
+                            data: $("#form_make_sell").serialize(),
+                            headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                            }
+                        }).done(function(response){
+                            Toast.fire(
+                                response.title,
+                                response.message,
+                                response.status
+                            );
+                            if (response.status === 'success') {
+                                setTimeout(function() {
+                                    $(location).prop("href", response.data.url);
+                                }, 1000);
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            Toast.fire(
+                                "Oops!",
+                                "An error may have occurred",
+                                "error"
+                            );
+                        });
+                    }
+                })
+            });
         });
     </script>
 @endsection

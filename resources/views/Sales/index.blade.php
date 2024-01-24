@@ -227,11 +227,11 @@
                                         </div>
                                     </form>
                                 @endif
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="sale-{{$sale->id}}-dropdown-button">
+                                {{-- <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="sale-{{$sale->id}}-dropdown-button">
                                     <li>
                                         <a href="{{ route('sales.edit', ['id' => $sale->id]) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                     </li>
-                                </ul>
+                                </ul> --}}
                             </div>
                         </td>
                     </tr>
